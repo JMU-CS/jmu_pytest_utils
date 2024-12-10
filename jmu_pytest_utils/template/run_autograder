@@ -4,6 +4,11 @@
 # On Gradescope, the working directory is /autograder. When running offline,
 # the working directory doesn't change, and grading files are created there.
 
+if [ -d "/autograder/results" ]; then
+    RES_DIR="/autograder/results"
+else
+    RES_DIR="."
+fi
 if [ -d "/autograder/source" ]; then
     cd /autograder/source
 fi
@@ -15,15 +20,15 @@ fi
 source config.sh
 
 # name of the current autograder step
-NAME=NAME.txt
+NAME=$RES_DIR/NAME.txt
 > $NAME
 
 # file for capturing stdout and stderr
-OUTPUT=OUTPUT.txt
+OUTPUT=$RES_DIR/OUTPUT.txt
 > $OUTPUT
 
 # output file required by Gradescope
-RESULTS=results.json
+RESULTS=$RES_DIR/results.json
 > $RESULTS
 
 # called if anything fails before pytest
@@ -82,7 +87,7 @@ python -m jmu_pytest_utils.audit $SUBMISSION_FILES >> $OUTPUT
 if [[ -s $OUTPUT ]]; then abort; fi
 
 # run pytest and emit the results
-pytest --timeout=$FUNCTION_TIMEOUT $AUTOGRADER_TESTS
+pytest --timeout=$FUNCTION_TIMEOUT $AUTOGRADER_TESTS >> $OUTPUT
 if [ -d /autograder/results ]; then
     cp results.json /autograder/results
 fi

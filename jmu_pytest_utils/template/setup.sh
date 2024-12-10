@@ -5,7 +5,7 @@ V=3.12
 # Install Python
 add-apt-repository -y ppa:deadsnakes/ppa
 apt-get update
-apt-get install -y python${V}-venv
+apt-get install -y python${V}-venv jq
 
 # Virtual environment
 cd /autograder/source
