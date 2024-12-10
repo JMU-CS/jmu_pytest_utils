@@ -6,6 +6,7 @@ https://saligrama.io/blog/gradescope-autograder-security/
 
 import ast
 from collections import Counter
+from jmu_pytest_utils.common import chdir_test
 import sys
 
 
@@ -69,6 +70,7 @@ def count_calls(filename, func_id):
     Returns:
         int: Number of times the function is called.
     """
+    chdir_test()
     with open(filename, encoding="utf-8") as file:
         source = file.read()
     tree = ast.parse(source, filename)
@@ -89,6 +91,7 @@ def count_nodes(filename):
     Returns:
         Counter: Maps AST node names to counts.
     """
+    chdir_test()
     with open(filename, encoding="utf-8") as file:
         source = file.read()
     tree = ast.parse(source, filename)
@@ -96,7 +99,7 @@ def count_nodes(filename):
 
 
 def main(paths):
-    """Check each source file for forbidden code.
+    """Called by run_autograder to check for forbidden code.
 
     Args:
         paths (list): Names of Python source files.

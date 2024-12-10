@@ -1,4 +1,4 @@
-"""Enforce a limit on the number of submissions."""
+"""Initialize results.json with submission metadata."""
 
 from datetime import datetime
 import json
@@ -10,7 +10,7 @@ TZ = pytz.timezone(os.getenv("SCHOOL_TIME_ZONE"))
 
 
 def main():
-    """Initialize results.json with submission metadata."""
+    """Called by run_autograder to enforce the submission limit."""
 
     try:
         with open("/autograder/submission_metadata.json") as file:

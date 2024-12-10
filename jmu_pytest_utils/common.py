@@ -4,13 +4,19 @@ import inspect
 import os
 import subprocess
 
-# Automatically change to the directory of the test module
-# so that tests can run both in VS Code and on Gradescope.
-for frame_info in inspect.stack()[1:]:
-    module = inspect.getmodule(frame_info.frame)
-    if module and "/lib/" not in module.__file__:
-        os.chdir(os.path.dirname(os.path.abspath(module.__file__)))
-        break
+
+def chdir_test():
+    """Change the current directory to that of the test module.
+
+    This function ensures that tests run smoothly both offline
+    (in VS Code) and on Gradescope.
+    """
+    for frame_info in inspect.stack()[1:]:
+        basename = os.path.basename(frame_info.filename)
+        if basename.startswith("test_"):
+            dirname = os.path.dirname(frame_info.filename)
+            os.chdir(dirname)
+            break
 
 
 def _get_cfg(filename):
@@ -34,6 +40,7 @@ def assert_pep8(filename):
     Args:
         filename (str): The source file to check.
     """
+    chdir_test()
     result = subprocess.run(["flake8", "--config=" + _get_cfg("flake8.cfg"), filename],
                             capture_output=True, text=True)
     assert result.returncode == 0, "PEP 8 issues:\n" + \
@@ -46,6 +53,7 @@ def assert_docs(filename):
     Args:
         filename (str): The source file to check.
     """
+    chdir_test()
     result = subprocess.run(["flake8", "--config=" + _get_cfg("docstring.cfg"), filename],
                             capture_output=True, text=True)
     assert result.returncode == 0, "Docstring issues:\n" + \
@@ -62,4 +70,5 @@ def run_module(filename, input=""):
     Returns:
         CompletedProcess: Captured stdout and stderr.
     """
+    chdir_test()
     return subprocess.run(["python", filename], input=input, capture_output=True, text=True)

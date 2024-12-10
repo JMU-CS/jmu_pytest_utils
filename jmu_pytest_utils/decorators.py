@@ -1,4 +1,4 @@
-"""Test function decorators."""
+"""Decorators for test functions."""
 
 
 def required():
