@@ -35,7 +35,7 @@ def main():
             extra += 1
 
     # Format results for printing
-    extra_str = f"+{extra}" if extra else ""
+    extra_str = f"-{extra}" if extra else ""
     stamp = stamp.strftime("%b %d at %H:%M:%S")
 
     # Check submission limit
@@ -44,8 +44,8 @@ def main():
     if limit < 0:
         output = f"Submission {total} of unlimited -- {stamp}"
     else:
-        output = f"Submission {total} of {limit}{extra_str} -- {stamp}"
-        if total > limit + extra:
+        output = f"Submission {total}{extra_str} of {limit} -- {stamp}"
+        if total - extra > limit:
             output += "\n" \
                 + "Limit exceeded. Please click the Submission History button " \
                 + "and activate the submission you would like to be graded."

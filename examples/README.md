@@ -15,3 +15,16 @@
 Add explanation for variables that override config.sh
 
 Add documentation for decorators and common functions
+
+
+## Possible Results
+
+Missing files
+Extra files
+Submission limit
+Python error
+Code audit
+Pytest fail assert
+Pytest fail except
+Pytest fail timeout
+Pytest pass
