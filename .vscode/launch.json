@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pytest",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "cwd": "${workspaceFolder}/examples/2_basic_input",
+            "env": {
+                "PYDEVD_DISABLE_FILE_VALIDATION": "1",
+            },
+        },
+        {
+            "name": "limit.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/jmu_pytest_utils/limit.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/examples/2_basic_input",
+            "env": {
+                "SCHOOL_TIME_ZONE": "US/Eastern",
+                "SUBMISSION_LIMIT": "1",
+            },
+        },
+        {
+            "name": "audit.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/jmu_pytest_utils/audit.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/examples/2_basic_input",
+            "args": ["welcome.py"],
+        },
+        {
+            "name": "builder.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/jmu_pytest_utils/builder.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/examples/2_basic_input",
+            "args": ["build"],
+        },
+    ],
+}

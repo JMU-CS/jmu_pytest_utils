@@ -1,0 +1,48 @@
+{
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.coverage": true,
+    },
+    "python.testing.pytestArgs": [
+        ".",
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.analysis.extraPaths": [
+        "./jmu_pytest_utils"
+    ],
+    "cSpell.words": [
+        "autograder",
+        "autograders",
+        "autograding",
+        "darglint",
+        "deadsnakes",
+        "docstrings",
+        "execv",
+        "execve",
+        "exitstatus",
+        "forkpty",
+        "Gradescope",
+        "logreport",
+        "longreprtext",
+        "Mayfield",
+        "nodeid",
+        "pycache",
+        "pydocstyle",
+        "pytest",
+        "sessionfinish",
+        "sessionstart",
+        "spawnl",
+        "spawnle",
+        "spawnlp",
+        "spawnlpe",
+        "spawnp",
+        "spawnv",
+        "spawnve",
+        "spawnvp",
+        "spawnvpe",
+        "startfile",
+        "venv"
+    ],
+}

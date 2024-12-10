@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+# This script is designed to run both on Gradescope and offline for testing.
+# On Gradescope, the working directory is /autograder. When running offline,
+# the working directory doesn't change, and grading files are created there.
+
+if [ -d "/autograder/source" ]; then
+    cd /autograder/source
+fi
+if [ -d ".venv" ]; then
+    source .venv/bin/activate
+fi
+
+# set autograder environment variables
+source config.sh
+
+# name of the current autograder step
+NAME=NAME.txt
+> $NAME
+
+# file for capturing stdout and stderr
+OUTPUT=OUTPUT.txt
+> $OUTPUT
+
+# output file required by Gradescope
+RESULTS=results.json
+> $RESULTS
+
+# called if anything fails before pytest
+function abort {
+    echo "{\"score\": 0, \"tests\": [{\"name\": $(jq -Rs . < $NAME), \"output\": $(jq -Rs . < $OUTPUT)}]}" > $RESULTS
+    exit
+}
+
+# check for required files
+if [ -d "/autograder/submission" ]; then
+    cd /autograder/submission
+fi
+echo -n "Missing files" > $NAME
+for f in $SUBMISSION_FILES; do
+    if [[ ! -f "$f" ]]; then
+        echo "ERROR: $f not found" >> $OUTPUT
+    fi
+done
+if [[ -s $OUTPUT ]]; then abort; fi
+
+# if running on Gradescope
+if [ -d "/autograder/submission" ]; then
+    # reject any other files
+    echo -n "Extra files" > $NAME
+    for f in $(find -type f -printf '%P\n'); do
+        if [[ ! " $SUBMISSION_FILES " =~ .*\ $f\ .* ]]; then
+            echo "ERROR: don't submit $f" >> $OUTPUT
+        fi
+    done
+    if [[ -s $OUTPUT ]]; then abort; fi
+
+    # copy files to source directory
+    cp $SUBMISSION_FILES /autograder/source
+    cd /autograder/source
+fi
+
+# create initial results.json file
+python -m jmu_pytest_utils.limit
+if [ $? -ne 0 ]; then
+  if [ -d /autograder/results ]; then
+    cp results.json /autograder/results
+  fi
+  exit  # submission limit exceeded
+fi
+
+# make sure compiles without error
+echo -n "Python error" > $NAME
+for f in $SUBMISSION_FILES; do
+    python -m py_compile $f 2>> $OUTPUT
+done
+if [[ -s $OUTPUT ]]; then abort; fi
+
+# check for any forbidden code
+echo -n "Code audit" > $NAME
+python -m jmu_pytest_utils.audit $SUBMISSION_FILES >> $OUTPUT
+if [[ -s $OUTPUT ]]; then abort; fi
+
+# run pytest and emit the results
+pytest --timeout=$FUNCTION_TIMEOUT $AUTOGRADER_TESTS
+if [ -d /autograder/results ]; then
+    cp results.json /autograder/results
+fi
