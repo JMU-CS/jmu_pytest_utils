@@ -29,14 +29,12 @@ def test_pep8_docs():
 @weight(4)
 def test_output_alan():
     """Input: Alan"""
-    result = run_module(FILENAME, "Alan\n")
-    assert result.stdout == "Welcome to Python 3!\nWhat's your name? Alan is a great name!\n"
-    assert result.stderr == ""
+    stdout = run_module(FILENAME, "Alan\n")
+    assert stdout == "Welcome to Python 3!\nWhat's your name? Alan is a great name!\n"
 
 
 @weight(4)
 def test_output_grace():
     """Input: Grace"""
-    result = run_module(FILENAME, "Grace\n")
-    assert result.stdout == "Welcome to Python 3!\nWhat's your name? Grace is a great name!\n"
-    assert result.stderr == ""
+    stdout = run_module(FILENAME, "Grace\n")
+    assert stdout == "Welcome to Python 3!\nWhat's your name? Grace is a great name!\n"

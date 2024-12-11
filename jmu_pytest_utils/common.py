@@ -2,6 +2,7 @@
 
 import inspect
 import os
+import pytest
 import subprocess
 
 
@@ -60,7 +61,7 @@ def assert_docs(filename):
         "\n".join("  " + line for line in result.stdout.splitlines())
 
 
-def run_module(filename, input=""):
+def run_module(filename, input=None):
     """Run the given module in a subprocess.
 
     Args:
@@ -68,7 +69,13 @@ def run_module(filename, input=""):
         input (str): Standard input from the user.
 
     Returns:
-        CompletedProcess: Captured stdout and stderr.
+        str: Captured output from the child process.
     """
     chdir_test()
-    return subprocess.run(["python", filename], input=input, capture_output=True, text=True)
+    result = subprocess.run(["python", filename], input=input,
+                            capture_output=True, text=True)
+    if result.stderr:
+        # remove absolute paths from the traceback
+        reason = result.stderr.replace(os.getcwd() + os.path.sep, "")
+        pytest.fail(reason)
+    return result.stdout
