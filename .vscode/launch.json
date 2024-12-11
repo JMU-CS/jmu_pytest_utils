@@ -23,7 +23,7 @@
             "cwd": "${workspaceFolder}/examples/2_basic_input",
             "env": {
                 "SCHOOL_TIME_ZONE": "US/Eastern",
-                "SUBMISSION_LIMIT": "1",
+                "SUBMISSION_LIMIT": "0",
             },
         },
         {

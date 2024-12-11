@@ -26,16 +26,14 @@ def main():
 
     # Ignore submissions that don't count
     total = 1 + len(prev)
-    extra = 0
     for submit in prev:
         try:
             # See results at the end of this function
             submit["results"]["extra_data"]["valid_files"]
         except (KeyError, TypeError):
-            extra += 1
+            total -= 1
 
     # Format results for printing
-    extra_str = f"-{extra}" if extra else ""
     stamp = stamp.strftime("%b %d at %H:%M:%S")
 
     # Check submission limit
@@ -44,9 +42,9 @@ def main():
     if limit < 0:
         output = f"Submission {total} of unlimited -- {stamp}"
     else:
-        output = f"Submission {total}{extra_str} of {limit} -- {stamp}"
-        if total - extra > limit:
-            output += "\n" \
+        output = f"Submission {total} of {limit} -- {stamp}"
+        if total > limit:
+            output += "\n\n" \
                 + "Limit exceeded. Please click the Submission History button " \
                 + "and activate the submission you would like to be graded."
             status = 1
@@ -55,6 +53,7 @@ def main():
     results = {
         "extra_data": {"valid_files": True},
         "output": output,
+        "score": 0,
     }
     with open("results.json", "w") as file:
         json.dump(results, file, indent=4)

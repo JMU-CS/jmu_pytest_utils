@@ -46,6 +46,7 @@ def pytest_sessionfinish(session, exitstatus):
 
     # Summarize the test reports
     tests = []
+    total = 0
     for item, reports in zip(session.items, REPORTS.values()):
 
         # The name is the docstring or function name
@@ -65,6 +66,7 @@ def pytest_sessionfinish(session, exitstatus):
                     score = weight
                 else:
                     score = 0
+            total += score
             test["score"] = score
             test["max_score"] = weight
 
@@ -87,5 +89,6 @@ def pytest_sessionfinish(session, exitstatus):
 
     # Write the results.json file
     RESULTS["tests"] = tests
+    RESULTS["score"] = total
     with open("results.json", "w") as file:
         json.dump(RESULTS, file, indent=4)
