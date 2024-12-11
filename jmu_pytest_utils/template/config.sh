@@ -22,7 +22,7 @@ export ADDITIONAL_FILES="{2}"
 export SUBMISSION_LIMIT="{3}"
 
 # Max seconds per test function
-# Default: 10
+# Default: 5
 export FUNCTION_TIMEOUT="{4}"
 
 # Time zone for submissions

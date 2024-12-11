@@ -19,6 +19,19 @@ CACHE_DIRS = ["__pycache__", ".pytest_cache"]
 ZIP_FILENAME = f"autograder_{os.path.basename(os.getcwd())}.zip"
 
 
+def init_cfg():
+    """Initialize global variables with default values."""
+    global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES
+    global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE
+
+    SUBMISSION_FILES = []
+    AUTOGRADER_TESTS = []
+    ADDITIONAL_FILES = []
+    SUBMISSION_LIMIT = -1
+    FUNCTION_TIMEOUT = 5
+    SCHOOL_TIME_ZONE = "US/Eastern"
+
+
 def copy_file(filename, overwrite=False):
     """Copy a template file if not already exists.
 
@@ -42,19 +55,6 @@ def delete_file(filename, message):
     if os.path.exists(filename):
         print("Deleting", message, filename)
         os.remove(filename)
-
-
-def init_cfg():
-    """Initialize global variables with default values."""
-    global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES
-    global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE
-
-    SUBMISSION_FILES = []
-    AUTOGRADER_TESTS = []
-    ADDITIONAL_FILES = []
-    SUBMISSION_LIMIT = -1
-    FUNCTION_TIMEOUT = 10
-    SCHOOL_TIME_ZONE = "US/Eastern"
 
 
 def load_cfg():
