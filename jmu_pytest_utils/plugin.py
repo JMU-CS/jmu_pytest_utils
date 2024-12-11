@@ -61,10 +61,10 @@ def pytest_sessionfinish(session, exitstatus):
         score = getattr(item.function, "score", 0)
         if not score:
             # The default score is all or nothing
-            if all(r.passed for r in reports):
-                score = weight
-            else:
+            if any(r.failed for r in reports):
                 score = 0
+            else:
+                score = weight
         # Show score only if not 0/0 points (blue)
         if score or weight:
             total += score
@@ -79,6 +79,9 @@ def pytest_sessionfinish(session, exitstatus):
                 for line in r.longreprtext.splitlines():
                     if line.startswith("E       "):
                         output += "\n" + line[8:]
+            elif r.skipped:
+                # Append the reason for skipping the test
+                output += r.longrepr[-1]
             else:
                 # Append full message from pytest.fail()
                 output += r.longreprtext
