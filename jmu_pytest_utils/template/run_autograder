@@ -33,6 +33,7 @@ RESULTS=$RES_DIR/results.json
 
 # called if anything fails before pytest
 function abort {
+    echo -e "\nThis submission will not be counted toward the submission limit." >> $OUTPUT
     echo "{\"score\": 0, \"tests\": [{\"name\": $(jq -Rs . < $NAME), \"output\": $(jq -Rs . < $OUTPUT)}]}" > $RESULTS
     exit
 }
@@ -41,7 +42,7 @@ function abort {
 if [ -d "/autograder/submission" ]; then
     cd /autograder/submission
 fi
-echo -n "Missing files" > $NAME
+echo -n "Missing Files" > $NAME
 for f in $SUBMISSION_FILES; do
     if [[ ! -f "$f" ]]; then
         echo "ERROR: $f not found" >> $OUTPUT
@@ -52,7 +53,7 @@ if [[ -s $OUTPUT ]]; then abort; fi
 # if running on Gradescope
 if [ -d "/autograder/submission" ]; then
     # reject any other files
-    echo -n "Extra files" > $NAME
+    echo -n "Extra Files" > $NAME
     for f in $(find -type f -printf '%P\n'); do
         if [[ ! " $SUBMISSION_FILES " =~ .*\ $f\ .* ]]; then
             echo "ERROR: don't submit $f" >> $OUTPUT
@@ -65,6 +66,19 @@ if [ -d "/autograder/submission" ]; then
     cd /autograder/source
 fi
 
+# make sure compiles without error
+echo -n "Compiler Error" > $NAME
+for f in $SUBMISSION_FILES; do
+    python -m py_compile $f 2>> $OUTPUT
+    sed -i 's/^Sorry: //' $OUTPUT
+done
+if [[ -s $OUTPUT ]]; then abort; fi
+
+# check for any forbidden code
+echo -n "Security Audit" > $NAME
+python -m jmu_pytest_utils.audit $SUBMISSION_FILES >> $OUTPUT
+if [[ -s $OUTPUT ]]; then abort; fi
+
 # create initial results.json file
 python -m jmu_pytest_utils.limit
 if [ $? -ne 0 ]; then
@@ -73,18 +87,6 @@ if [ $? -ne 0 ]; then
   fi
   exit  # submission limit exceeded
 fi
-
-# make sure compiles without error
-echo -n "Python error" > $NAME
-for f in $SUBMISSION_FILES; do
-    python -m py_compile $f 2>> $OUTPUT
-done
-if [[ -s $OUTPUT ]]; then abort; fi
-
-# check for any forbidden code
-echo -n "Code audit" > $NAME
-python -m jmu_pytest_utils.audit $SUBMISSION_FILES >> $OUTPUT
-if [[ -s $OUTPUT ]]; then abort; fi
 
 # run pytest and emit the results
 pytest --timeout=$FUNCTION_TIMEOUT $AUTOGRADER_TESTS >> $OUTPUT
