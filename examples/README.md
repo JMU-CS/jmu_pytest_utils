@@ -19,12 +19,12 @@ Add documentation for decorators and common functions
 
 ## Possible Results
 
-Missing files
-Extra files
-Submission limit
-Python error
-Code audit
-Pytest fail assert
-Pytest fail except
-Pytest fail timeout
-Pytest pass
+* Missing Files
+* Extra Files
+* Compiler Error
+* Security Audit
+* Submission Limit
+* pytest fail assert
+* pytest fail except
+* pytest fail timeout
+* pytest pass

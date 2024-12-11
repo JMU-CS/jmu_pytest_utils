@@ -56,16 +56,17 @@ def pytest_sessionfinish(session, exitstatus):
         tests.append(test)
 
         # max_score is set by the @weight() decorator
-        weight = getattr(item.function, "weight", None)
-        if weight:
-            # score can set manually for partial credit
-            score = getattr(item.function, "score", None)
-            if not score:
-                # The default score is all or nothing
-                if all(r.passed for r in reports):
-                    score = weight
-                else:
-                    score = 0
+        weight = getattr(item.function, "weight", 0)
+        # score can set manually for partial credit
+        score = getattr(item.function, "score", 0)
+        if not score:
+            # The default score is all or nothing
+            if all(r.passed for r in reports):
+                score = weight
+            else:
+                score = 0
+        # Show score only if not 0/0 points (blue)
+        if score or weight:
             total += score
             test["score"] = score
             test["max_score"] = weight
@@ -83,8 +84,9 @@ def pytest_sessionfinish(session, exitstatus):
         # If the test was required, stop here
         required = getattr(item.function, "required", None)
         if required and any(r.failed for r in reports):
-            output += "\n\nThis test must pass before other results are visible."
+            output += "\n\nThis test must pass before other results are shown."
             test["output"] = output
+            test["status"] = "failed"
             break
 
     # Write the results.json file
