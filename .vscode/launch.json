@@ -33,7 +33,7 @@
             "program": "${workspaceFolder}/jmu_pytest_utils/audit.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/examples/3_extra_credit",
-            "args": ["welcome.py"],
+            "args": ["extra.py"],
         },
         {
             "name": "builder.py",

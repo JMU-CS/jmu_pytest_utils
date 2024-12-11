@@ -30,6 +30,7 @@ To build `autograder.zip`, run this command from an assignment's directory:
 
 * Single library for autograding student's code+tests
 * Multi-part assignments, each with its own config.sh
+* Prevent topics from "later" chapters (based on ast)
 
 
 ## Features
