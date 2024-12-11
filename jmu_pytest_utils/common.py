@@ -44,8 +44,9 @@ def assert_pep8(filename):
     chdir_test()
     result = subprocess.run(["flake8", "--config=" + _get_cfg("flake8.cfg"), filename],
                             capture_output=True, text=True)
-    assert result.returncode == 0, "PEP 8 issues:\n" + \
-        "\n".join("  " + line for line in result.stdout.splitlines())
+    if result.returncode:
+        pytest.fail("PEP 8 issues:\n" + "\n".join("  " +
+                    line for line in result.stdout.splitlines()), False)
 
 
 def assert_docs(filename):
@@ -57,8 +58,9 @@ def assert_docs(filename):
     chdir_test()
     result = subprocess.run(["flake8", "--config=" + _get_cfg("docstring.cfg"), filename],
                             capture_output=True, text=True)
-    assert result.returncode == 0, "Docstring issues:\n" + \
-        "\n".join("  " + line for line in result.stdout.splitlines())
+    if result.returncode:
+        pytest.fail("Docstring issues:\n" + "\n".join("  " +
+                    line for line in result.stdout.splitlines()), False)
 
 
 def run_module(filename, input=None):
@@ -77,5 +79,5 @@ def run_module(filename, input=None):
     if result.stderr:
         # remove absolute paths from the traceback
         reason = result.stderr.replace(os.getcwd() + os.path.sep, "")
-        pytest.fail(reason)
+        pytest.fail(reason, False)
     return result.stdout

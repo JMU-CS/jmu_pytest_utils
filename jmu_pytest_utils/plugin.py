@@ -57,7 +57,7 @@ def pytest_sessionfinish(session, exitstatus):
 
         # max_score is set by the @weight() decorator
         weight = getattr(item.function, "weight", 0)
-        # score can set manually for partial credit
+        # score can be set manually for partial credit
         score = getattr(item.function, "score", 0)
         if not score:
             # The default score is all or nothing
@@ -71,12 +71,17 @@ def pytest_sessionfinish(session, exitstatus):
             test["score"] = score
             test["max_score"] = weight
 
-        # Extract output lines that start with "E"
+        # Initial output can be set during the test
         output = getattr(item.function, "output", "")
         for r in reports:
-            for line in r.longreprtext.splitlines():
-                if line.startswith("E       "):
-                    output += "\n" + line[8:]
+            if "E       " in r.longreprtext:
+                # Extract output lines that start with "E"
+                for line in r.longreprtext.splitlines():
+                    if line.startswith("E       "):
+                        output += "\n" + line[8:]
+            else:
+                # Append full message from pytest.fail()
+                output += r.longreprtext
         output = output.strip()
         if output:
             test["output"] = output
