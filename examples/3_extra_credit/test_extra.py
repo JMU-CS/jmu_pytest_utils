@@ -6,7 +6,7 @@ FILENAME = "extra.py"
 
 
 def test_pep8_docs():
-    """PEP 8 and docstrings"""
+    """PEP 8 and docstring"""
     assert_pep8(FILENAME)
     assert_docs(FILENAME)
     test_pep8_docs.output = "Extra credit for passing!"

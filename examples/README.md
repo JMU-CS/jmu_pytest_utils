@@ -4,8 +4,8 @@ The following assignments are provided for testing `jmu_pytest_utils`:
 
 * [1_hello_world](1_hello_world) -- minimal example
 * [2_basic_input](2_basic_input) -- demos user input
-* [3_extra_credit](3_extra_credit) -- sets output/score
-* 4_monkey_patch -- TODO
+* [3_extra_credit](3_extra_credit) -- custom output and score
+* [4_substitution](4_substitution) -- variable from autograder
 * 5_functions_only -- TODO
 * 6_provided_data -- TODO
 * 7_two_packages -- TODO

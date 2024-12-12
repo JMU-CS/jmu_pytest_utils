@@ -43,7 +43,7 @@ To build `autograder.zip`, run this command from an assignment's directory:
 * Test name defaults to the function name if no docstring
 * Partial credit by setting test_function.score attribute
 * Custom output by setting test_function.output attribute
-* Test functions automatically time out after 10 seconds
+* Test functions automatically time out (default 5 seconds)
 * Output is hidden (student can't print the test arguments)
 * Security audit to prevent students from using the network
 * Command-line script for building autograder.zip archives

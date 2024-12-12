@@ -115,7 +115,8 @@ def make_cfg():
     if not AUTOGRADER_TESTS:
         AUTOGRADER_TESTS = test_files
     if not ADDITIONAL_FILES:
-        ADDITIONAL_FILES = data_files
+        ADDITIONAL_FILES = [file for file in main_files + data_files
+                            if file not in SUBMISSION_FILES]
 
     # Show output if not comparing with backup
     if not os.path.exists("config.bak"):
