@@ -69,7 +69,7 @@ fi
 # make sure compiles without error
 echo -n "Compiler Error" > $NAME
 for f in $SUBMISSION_FILES; do
-    python -m py_compile $f 2>> $OUTPUT
+    [[ "$f" == *.py ]] && python -m py_compile "$f" 2>> $OUTPUT
     sed -i 's/^Sorry: //' $OUTPUT
 done
 if [[ -s $OUTPUT ]]; then abort; fi

@@ -1,4 +1,4 @@
-"""Common test functions used in many assignments."""
+"""Common test functions used in many autograders."""
 
 import inspect
 import os
