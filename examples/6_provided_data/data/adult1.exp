@@ -1,0 +1,17 @@
+age,workclass,fnlwgt,education,education-num,marital-status,occupation,relationship,race,sex,capital-gain,capital-loss,hours-per-week,native-country,income
+43,Federal-gov,410867,Doctorate,16,Never-married,Prof-specialty,Not-in-family,White,Female,0,0,50,United-States,>50K
+53,Federal-gov,199720,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,15024,0,60,Germany,>50K
+51,Federal-gov,282680,Doctorate,16,Never-married,Prof-specialty,Not-in-family,White,Female,0,1564,70,United-States,>50K
+37,Federal-gov,129573,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,0,0,72,?,>50K
+46,Federal-gov,43206,Doctorate,16,Never-married,Prof-specialty,Not-in-family,White,Female,0,1564,50,United-States,>50K
+51,Federal-gov,73670,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,4386,0,52,United-States,>50K
+56,Federal-gov,196307,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,0,0,40,United-States,>50K
+47,Federal-gov,102771,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,0,0,40,United-States,>50K
+43,Federal-gov,211763,Doctorate,16,Separated,Prof-specialty,Unmarried,Black,Female,0,0,24,United-States,>50K
+35,Federal-gov,103214,Doctorate,16,Never-married,Prof-specialty,Not-in-family,Amer-Indian-Eskimo,Female,0,0,60,United-States,>50K
+63,Federal-gov,39181,Doctorate,16,Divorced,Exec-managerial,Not-in-family,White,Female,0,2559,60,United-States,>50K
+34,Federal-gov,345259,Doctorate,16,Never-married,Prof-specialty,Not-in-family,White,Female,0,0,99,United-States,<=50K
+33,Federal-gov,331615,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,White,Male,0,1848,40,United-States,>50K
+64,Federal-gov,175534,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,Asian-Pac-Islander,Male,0,0,40,China,>50K
+79,Federal-gov,62176,Doctorate,16,Widowed,Exec-managerial,Not-in-family,White,Male,0,0,6,United-States,>50K
+51,Federal-gov,223206,Doctorate,16,Married-civ-spouse,Prof-specialty,Husband,Asian-Pac-Islander,Male,15024,0,40,Vietnam,>50K

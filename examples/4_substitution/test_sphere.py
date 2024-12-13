@@ -5,7 +5,6 @@ from pytest import approx
 
 import grader
 import sphere
-
 FILENAME = "sphere.py"
 SUBMISSION_FILES = [FILENAME]  # grader.py not submitted
 

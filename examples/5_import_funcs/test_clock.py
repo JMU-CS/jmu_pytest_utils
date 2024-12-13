@@ -1,13 +1,13 @@
 from jmu_pytest_utils.common import assert_pep8, assert_docs
 from jmu_pytest_utils.decorators import weight
-from clock import time_str, add_time
 
+from clock import time_str, add_time
 FILENAME = "clock.py"
 
 
 @weight(2)
 def test_pep8_docs():
-    """PEP 8 and docstring"""
+    """PEP 8 and docstrings"""
     assert_pep8(FILENAME)
     assert_docs(FILENAME)
 
