@@ -9,6 +9,7 @@ def test_pep8_docs():
     """PEP 8 and docstring"""
     assert_pep8(FILENAME)
     assert_docs(FILENAME)
+    # Manually assign the function's output and score
     test_pep8_docs.output = "Extra credit for passing!"
     test_pep8_docs.score = 2
 

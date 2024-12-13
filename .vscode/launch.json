@@ -9,7 +9,7 @@
             "type": "debugpy",
             "request": "launch",
             "module": "pytest",
-            "cwd": "${workspaceFolder}/examples/3_extra_credit",
+            "cwd": "${workspaceFolder}/examples/5_import_funcs",
             "env": {
                 "PYDEVD_DISABLE_FILE_VALIDATION": "1",
             },
@@ -20,7 +20,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/jmu_pytest_utils/limit.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/examples/3_extra_credit",
+            "cwd": "${workspaceFolder}/examples/5_import_funcs",
             "env": {
                 "SCHOOL_TIME_ZONE": "US/Eastern",
                 "SUBMISSION_LIMIT": "0",
@@ -32,7 +32,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/jmu_pytest_utils/audit.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/examples/3_extra_credit",
+            "cwd": "${workspaceFolder}/examples/5_import_funcs",
             "args": ["extra.py"],
         },
         {
@@ -41,7 +41,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/jmu_pytest_utils/builder.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/examples/3_extra_credit",
+            "cwd": "${workspaceFolder}/examples/5_import_funcs",
             "args": ["build"],
         },
     ],

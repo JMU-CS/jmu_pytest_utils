@@ -6,7 +6,7 @@ The following assignments are provided for testing `jmu_pytest_utils`:
 * [2_basic_input](2_basic_input) -- demos user input
 * [3_extra_credit](3_extra_credit) -- custom output and score
 * [4_substitution](4_substitution) -- variable from autograder
-* 5_functions_only -- TODO
+* [5_import_funcs](5_import_funcs) -- import and test functions
 * 6_provided_data -- TODO
 * 7_two_packages -- TODO
 * 8_multiple_parts -- TODO
@@ -24,13 +24,15 @@ SUBMISSION_LIMIT = 10
 ```
 
 The [`builder.py`](../jmu_pytest_utils/builder.py) script automatically detects assignment files using `os.walk()`.
-However, you can manually specify the file requirements if needed.
-Note that Bash and Python represent a list of files differently: Bash uses a space-delimited string, while Python uses a list of strings.
-For example, to specify the files that students must submit, use the following Python syntax:
+However, you can manually override the file requirements if needed.
+For example, to specify the only files that students must submit, add a line like this to your test module:
 
 ``` py
 SUBMISSION_FILES = ["file1.py", "file2.py"]
 ```
+
+When looking at `config.sh`, note that Bash and Python represent the list of files differently.
+Bash uses a space-delimited string (Ex: `"file1.py file2.py"`), but Python uses a list of strings.
 
 
 ## Documentation
