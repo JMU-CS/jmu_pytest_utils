@@ -20,6 +20,19 @@ def pytest_sessionstart(session):
         with open("results.json") as file:
             global RESULTS
             RESULTS = json.load(file)
+            # Initialize new attributes
+            RESULTS["score"] = 0
+            RESULTS["tests"] = []
+
+
+def pytest_exception_interact(node, call, report):
+    """Report errors during collection."""
+    if report.when == "collect":
+        RESULTS["tests"].append({
+            "name": "Could not load " + node.name,
+            "output": report.longreprtext,
+            "status": "failed",
+        })
 
 
 def pytest_runtest_logreport(report):
@@ -45,8 +58,8 @@ def pytest_sessionfinish(session, exitstatus):
         return
 
     # Summarize the test reports
-    tests = []
-    total = 0
+    total_score = 0
+    tests = RESULTS["tests"]
     for item, reports in zip(session.items, REPORTS.values()):
 
         # The name is the docstring or function name
@@ -67,7 +80,7 @@ def pytest_sessionfinish(session, exitstatus):
                 score = weight
         # Show score only if not 0/0 points (blue)
         if score or weight:
-            total += score
+            total_score += score
             test["score"] = score
             test["max_score"] = weight
 
@@ -98,7 +111,6 @@ def pytest_sessionfinish(session, exitstatus):
             break
 
     # Write the results.json file
-    RESULTS["tests"] = tests
-    RESULTS["score"] = total
+    RESULTS["score"] = total_score
     with open("results.json", "w") as file:
         json.dump(RESULTS, file, indent=4)
