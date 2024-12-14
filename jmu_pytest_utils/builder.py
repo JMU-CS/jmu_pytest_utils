@@ -179,6 +179,16 @@ def build_cmd(setup=False):
         copy_file(filename)
 
 
+def debug_cmd():
+    """Run the autograder and display the results."""
+
+    os.system("./run_autograder")
+    if os.name == "posix":
+        os.system("xdg-open results.json")
+    else:
+        os.system("start results.json")
+
+
 def make_zip():
     """Create the autograder zip file for Gradescope."""
 
@@ -243,12 +253,15 @@ Possible commands:
 - build: Create zip file for Gradescope
 - clean: Delete autograder-related files
 - setup: Copy autograder template files
+- debug: Run autograder and open results
 
 Usually "jmu_pytest_utils build" is sufficient. If you would like to modify the
 autograder scripts or do additional testing, run the "setup" command to copy the
-template files. You can then execute run_autograder to see what will happens on
-Gradescope. The "build" and "clean" commands will not automatically overwrite or
-delete any template files that have been modified.
+template files. You can then execute run_autograder (manually) to see what will
+happen on Gradescope. The "debug" command sets up and runs the autograder, and
+opens results.json in the default editor for inspection. The "build" and "clean"
+commands will not automatically overwrite or delete any template files that have
+been modified during setup or debug.
 """
 
 
@@ -265,6 +278,9 @@ def main():
             clean_cmd()
         case "setup":
             build_cmd(True)
+        case "debug":
+            build_cmd(True)
+            debug_cmd()
         case _:
             print(USAGE)
 
