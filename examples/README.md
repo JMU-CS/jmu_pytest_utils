@@ -3,7 +3,7 @@
 The following assignments are provided for testing `jmu_pytest_utils`:
 
 * [1_hello_world](1_hello_world) -- minimal example
-* [2_basic_input](2_basic_input) -- demos user input
+* [2_basic_input](2_basic_input) -- program with user input
 * [3_extra_credit](3_extra_credit) -- custom output and score
 * [4_substitution](4_substitution) -- variable from autograder
 * [5_import_funcs](5_import_funcs) -- import and test functions

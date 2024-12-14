@@ -4,9 +4,10 @@ import os
 import pytest
 
 from analyze import count_iris, filter_adult
+
 FILENAME = "analyze.py"
 
-# Putting this line at the module level allows individual tests to be run.
+# Putting this line at the module level allows running individual tests.
 chdir_test()
 
 
