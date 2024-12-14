@@ -182,7 +182,10 @@ def build_cmd(setup=False):
 def debug_cmd():
     """Run the autograder and display the results."""
 
-    os.system("./run_autograder")
+    print("Running autograder")
+    os.system("bash run_autograder")
+
+    print("Opening results.json")
     if os.name == "posix":
         os.system("xdg-open results.json")
     else:
