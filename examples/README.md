@@ -8,7 +8,7 @@ The following assignments are provided for testing `jmu_pytest_utils`:
 * [4_substitution](4_substitution) -- variable from autograder
 * [5_import_funcs](5_import_funcs) -- import and test functions
 * [6_provided_data](6_provided_data) -- file I/O assignment
-* 7_two_packages -- TODO
+* [7_class_package](7_class_package) -- classes and packages
 * 8_multiple_parts -- TODO
 
 
