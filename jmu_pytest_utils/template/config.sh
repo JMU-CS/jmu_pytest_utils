@@ -28,3 +28,7 @@ export FUNCTION_TIMEOUT="{4}"
 # Time zone for submissions
 # Default: US/Eastern
 export SCHOOL_TIME_ZONE="{5}"
+
+# Python version to install
+# Default: 3.12
+export INSTALL_PYTHON_V="{6}"

@@ -5,7 +5,7 @@ from pytest import raises
 from game.card import RANKS, SUITS, Card
 
 FILENAME = "../game/card.py"
-
+ADDITIONAL_FILES = ["tests/__init__.py"]
 
 @required()
 def test_globals():

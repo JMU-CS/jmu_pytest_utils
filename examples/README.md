@@ -1,6 +1,6 @@
 # Examples
 
-The following assignments are provided for testing `jmu_pytest_utils`:
+The following "assignments" are used for testing `jmu_pytest_utils` and provided as examples for writing tests:
 
 * [1_hello_world](1_hello_world) -- minimal example
 * [2_basic_input](2_basic_input) -- program with user input
@@ -17,15 +17,22 @@ The following assignments are provided for testing `jmu_pytest_utils`:
 During autograder setup, a configuration script named [`config.sh`](../jmu_pytest_utils/template/config.sh) is automatically generated.
 This script sets the environment variables used by [`run_autograder`](../jmu_pytest_utils/template/run_autograder) and other grading scripts.
 You can override the default values in `config.sh` by defining global variables with the same names.
-For example, to limit the number of submissions (unlimited by default), you can add the following line to your test module (after the `import` statements):
+For example, to limit the number of submissions, you can add the following line to your test module (after the `import` statements):
 
 ``` py
 SUBMISSION_LIMIT = 10
 ```
 
+Alternatively, you can define environment variables that apply to all assignments.
+For example, the default time zone is `US/Eastern`, but if your school is somewhere else, you can set this variable in your OS environment:
+
+``` sh
+export SCHOOL_TIME_ZONE="US/Mountain"
+```
+
 The [`builder.py`](../jmu_pytest_utils/builder.py) script automatically detects assignment files using `os.walk()`.
 However, you can manually override the file requirements if needed.
-For example, to specify the only files that students must submit, add a line like this to your test module:
+For example, to specify the files that students must submit, add a line like this to your test module:
 
 ``` py
 SUBMISSION_FILES = ["file1.py", "file2.py"]
@@ -33,6 +40,7 @@ SUBMISSION_FILES = ["file1.py", "file2.py"]
 
 When looking at `config.sh`, note that Bash and Python represent the list of files differently.
 Bash uses a space-delimited string (Ex: `"file1.py file2.py"`), but Python uses a list of strings.
+See [`config.sh`](../jmu_pytest_utils/template/config.sh) for the complete list of variables and default values.
 
 
 ## Documentation
@@ -67,8 +75,8 @@ If any of these checks fail, the assignment receives 0 points, and the submissio
 The last step of `run_autograder` is to run `pytest`, which generates the `results.json` file required for Gradescope.
 Each test function has the following possible outcomes:
 
-* An assertion fails -- no points
 * An error is raised -- no points
+* An assertion fails -- no points
 * The test times out -- no points
 * The test is skipped -- full points
 * The test passes -- full points

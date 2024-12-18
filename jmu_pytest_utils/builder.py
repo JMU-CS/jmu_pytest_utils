@@ -22,14 +22,15 @@ ZIP_FILENAME = f"autograder_{os.path.basename(os.getcwd())}.zip"
 def init_cfg():
     """Initialize global variables with default values."""
     global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES
-    global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE
+    global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE, INSTALL_PYTHON_V
 
     SUBMISSION_FILES = []
     AUTOGRADER_TESTS = []
     ADDITIONAL_FILES = []
-    SUBMISSION_LIMIT = -1
-    FUNCTION_TIMEOUT = 5
-    SCHOOL_TIME_ZONE = "US/Eastern"
+    SUBMISSION_LIMIT = os.getenv("SUBMISSION_LIMIT", -1)
+    FUNCTION_TIMEOUT = os.getenv("FUNCTION_TIMEOUT", 5)
+    SCHOOL_TIME_ZONE = os.getenv("SCHOOL_TIME_ZONE", "US/Eastern")
+    INSTALL_PYTHON_V = os.getenv("INSTALL_PYTHON_V", 3.12)
 
 
 def copy_file(filename, overwrite=False):
@@ -117,6 +118,8 @@ def make_cfg():
     if not ADDITIONAL_FILES:
         ADDITIONAL_FILES = [file for file in main_files + data_files
                             if file not in SUBMISSION_FILES]
+    SUBMISSION_FILES = [file for file in SUBMISSION_FILES
+                        if file not in ADDITIONAL_FILES]
 
     # Show output if not comparing with backup
     if not os.path.exists("config.bak"):
@@ -134,6 +137,7 @@ def make_cfg():
         SUBMISSION_LIMIT,
         FUNCTION_TIMEOUT,
         SCHOOL_TIME_ZONE,
+        INSTALL_PYTHON_V,
     )
     with open("config.sh", "w") as file:
         file.write(text)
@@ -159,6 +163,7 @@ def build_cmd(setup=False):
     print("  SUBMISSION_LIMIT =", SUBMISSION_LIMIT)
     print("  FUNCTION_TIMEOUT =", FUNCTION_TIMEOUT)
     print("  SCHOOL_TIME_ZONE =", SCHOOL_TIME_ZONE)
+    print("  INSTALL_PYTHON_V =", INSTALL_PYTHON_V)
 
     # Count the total number of autograder points
     points = 0

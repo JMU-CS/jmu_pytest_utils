@@ -62,7 +62,7 @@ if [ -d "/autograder/submission" ]; then
     if [[ -s $OUTPUT ]]; then abort; fi
 
     # copy files to source directory
-    cp $SUBMISSION_FILES /autograder/source
+    cp --parents $SUBMISSION_FILES /autograder/source
     cd /autograder/source
 fi
 

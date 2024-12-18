@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-V=3.12
+# set autograder environment variables
+cd /autograder/source
+source config.sh
 
 # Install Python
 add-apt-repository -y ppa:deadsnakes/ppa
 apt-get update
-apt-get install -y python${V}-venv jq
+apt-get install -y python${INSTALL_PYTHON_V}-venv jq
 
 # Virtual environment
-cd /autograder/source
-python${V} -m venv .venv
+python${INSTALL_PYTHON_V} -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 
