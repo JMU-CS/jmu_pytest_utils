@@ -93,7 +93,7 @@ def make_cfg():
             if file not in ignore:
                 file_path = os.path.join(root, file)[2:]  # remove "./"
                 if file.endswith(".py"):
-                    if file.startswith("test_"):
+                    if file.startswith("test_") or os.path.basename(root) == "tests":
                         test_files.append(file_path)
                     else:
                         main_files.append(file_path)
