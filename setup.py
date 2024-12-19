@@ -18,6 +18,7 @@ setup(
         "darglint",
         "flake8-docstrings",
         "pep8-naming",
+        "pytest-cov",
         "pytest-timeout",
         "pytz",
     ],

@@ -81,3 +81,29 @@ def run_module(filename, input=None):
         reason = result.stderr.replace(os.getcwd() + os.path.sep, "")
         pytest.fail(reason, False)
     return result.stdout
+
+
+def run_pytest(main_module, test_module):
+    """Run pytest with coverage in a subprocess.
+
+    Args:
+        main_module (str): Name of the main module to test.
+        test_module (str): Name of the test module to run.
+
+    Returns:
+        str: Captured output from the child process.
+    """
+    # Arguments can also be filenames
+    if main_module.endswith(".py"):
+        main_module = main_module[:-3]
+    if not test_module.endswith(".py"):
+        test_module += ".py"
+    chdir_test()
+    result = subprocess.run([
+        "pytest",
+        "--cov=" + main_module,  # must not end with .py
+        "--cov-branch",
+        "--cov-report=json",
+        test_module              # must end with .py
+    ])
+    return result.returncode

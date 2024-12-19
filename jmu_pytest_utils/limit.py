@@ -6,7 +6,7 @@ import os
 import sys
 
 import pytz
-TZ = pytz.timezone(os.getenv("SCHOOL_TIME_ZONE"))
+TZ = pytz.timezone(os.getenv("SCHOOL_TIME_ZONE", "US/Eastern"))
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
 
     # Check submission limit
     status = 0
-    limit = int(os.getenv("SUBMISSION_LIMIT"))
+    limit = int(os.getenv("SUBMISSION_LIMIT", -1))
     if limit < 0:
         output = f"Submission {total} of unlimited -- {stamp}"
     else:

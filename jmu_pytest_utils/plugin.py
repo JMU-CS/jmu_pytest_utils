@@ -16,9 +16,15 @@ REPORTS = {}
 
 def pytest_sessionstart(session):
     """Read the initial results.json data."""
-    if os.path.exists("results.json"):
+    global RESULTS
+
+    # If starting via common.run_pytest()
+    if session.config.getoption("--cov-report"):
+        RESULTS = {"cover": True, "tests": []}
+
+    # If starting via run_autograder
+    elif os.path.exists("results.json"):
         with open("results.json") as file:
-            global RESULTS
             RESULTS = json.load(file)
             # Initialize new attributes
             RESULTS["score"] = 0
@@ -27,6 +33,12 @@ def pytest_sessionstart(session):
 
 def pytest_exception_interact(node, call, report):
     """Report errors during collection."""
+
+    # Abort if not in run_autograder
+    if not RESULTS:
+        return
+
+    # Add the report to the dictionary
     if report.when == "collect":
         RESULTS["tests"].append({
             "name": "Could not load " + node.name,
@@ -64,7 +76,8 @@ def pytest_sessionfinish(session, exitstatus):
 
         # The name is the docstring or function name
         test = {
-            "name": item.function.__doc__ or item.name
+            "name": item.name if RESULTS.get("cover")
+            else item.function.__doc__ or item.name
         }
         tests.append(test)
 
@@ -109,6 +122,13 @@ def pytest_sessionfinish(session, exitstatus):
             test["output"] = output
             test["status"] = "failed"
             break
+
+        # If running test coverage, show status
+        if RESULTS.get("cover"):
+            if all(r.passed for r in reports):
+                test["status"] = "passed"
+            else:
+                test["status"] = "failed"
 
     # Write the results.json file
     RESULTS["score"] = total_score
