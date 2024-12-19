@@ -6,6 +6,7 @@ https://gradescope-autograders.readthedocs.io/en/latest/specs/
 
 import json
 import os
+from jmu_pytest_utils.coverage import inject_random
 
 # Initial results.json created in limit.py via run_autograder
 RESULTS = None
@@ -14,13 +15,24 @@ RESULTS = None
 REPORTS = {}
 
 
+def pytest_addoption(parser):
+    """Register a command line option."""
+    parser.addoption(
+        "--jmu",
+        help="Specify test mode (internal use)"
+    )
+
+
 def pytest_sessionstart(session):
     """Read the initial results.json data."""
     global RESULTS
 
-    # If starting via common.run_pytest()
-    if session.config.getoption("--cov-report"):
-        RESULTS = {"cover": True, "tests": []}
+    # If starting via coverage module
+    jmu = session.config.getoption("--jmu")
+    if jmu:
+        RESULTS = {"jmu": jmu, "tests": []}
+        if jmu != "assert_pass":
+            inject_random(jmu)
 
     # If starting via run_autograder
     elif os.path.exists("results.json"):
@@ -76,7 +88,7 @@ def pytest_sessionfinish(session, exitstatus):
 
         # The name is the docstring or function name
         test = {
-            "name": item.name if RESULTS.get("cover")
+            "name": item.name if RESULTS.get("jmu")
             else item.function.__doc__ or item.name
         }
         tests.append(test)
@@ -123,8 +135,8 @@ def pytest_sessionfinish(session, exitstatus):
             test["status"] = "failed"
             break
 
-        # If running test coverage, show status
-        if RESULTS.get("cover"):
+        # If running with --jmu, show status
+        if RESULTS.get("jmu"):
             if all(r.passed for r in reports):
                 test["status"] = "passed"
             else:

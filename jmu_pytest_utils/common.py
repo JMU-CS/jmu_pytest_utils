@@ -63,6 +63,25 @@ def assert_docs(filename):
                     line for line in result.stdout.splitlines()), False)
 
 
+def run_command(args, input=None):
+    """Run the given command in a subprocess.
+
+    Args:
+        args (list): The command (and args) to run.
+        input (str): Standard input from the user.
+
+    Returns:
+        str: Captured output from the child process.
+    """
+    chdir_test()
+    result = subprocess.run(args, input=input, capture_output=True, text=True)
+    if result.stderr:
+        # remove absolute paths from the traceback
+        reason = result.stderr.replace(os.getcwd() + os.path.sep, "")
+        pytest.fail(reason, False)
+    return result.stdout
+
+
 def run_module(filename, input=None):
     """Run the given module in a subprocess.
 
@@ -73,37 +92,4 @@ def run_module(filename, input=None):
     Returns:
         str: Captured output from the child process.
     """
-    chdir_test()
-    result = subprocess.run(["python", filename], input=input,
-                            capture_output=True, text=True)
-    if result.stderr:
-        # remove absolute paths from the traceback
-        reason = result.stderr.replace(os.getcwd() + os.path.sep, "")
-        pytest.fail(reason, False)
-    return result.stdout
-
-
-def run_pytest(main_module, test_module):
-    """Run pytest with coverage in a subprocess.
-
-    Args:
-        main_module (str): Name of the main module to test.
-        test_module (str): Name of the test module to run.
-
-    Returns:
-        str: Captured output from the child process.
-    """
-    # Arguments can also be filenames
-    if main_module.endswith(".py"):
-        main_module = main_module[:-3]
-    if not test_module.endswith(".py"):
-        test_module += ".py"
-    chdir_test()
-    result = subprocess.run([
-        "pytest",
-        "--cov=" + main_module,  # must not end with .py
-        "--cov-branch",
-        "--cov-report=json",
-        test_module              # must end with .py
-    ])
-    return result.returncode
+    return run_command(["python", filename], input)

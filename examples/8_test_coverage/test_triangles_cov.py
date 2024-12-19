@@ -1,14 +1,11 @@
 """Analyze coverage for test_triangles."""
 
-from jmu_pytest_utils.common import assert_pep8, run_pytest
+from jmu_pytest_utils.common import assert_pep8
+from jmu_pytest_utils.coverage import assert_fail, assert_pass, assert_cover
 from jmu_pytest_utils.decorators import required, weight
 
 SUBMISSION_FILES = ["test_triangles.py"]
 ADDITIONAL_FILES = ["triangles.py"]
-
-
-def setup_module(module):
-    run_pytest("triangles.py", "test_triangles.py")
 
 
 @weight(1)
@@ -18,16 +15,19 @@ def test_pep8():
 
 @required()
 @weight(2)
-def test_stubs_fail():
-    pass
+def test_fail():
+    """All tests should fail when given random return values"""
+    assert_fail("triangles.py", "test_triangles.py")
 
 
 @required()
 @weight(2)
-def test_solution_pass():
-    pass
+def test_pass():
+    """All tests should pass when given correct return values"""
+    assert_pass("triangles.py", "test_triangles.py")
 
 
 @weight(5)
-def test_coverage():
-    pass
+def test_cover():
+    """Code coverage: all statements should run during tests"""
+    assert_cover("triangles.py", "test_triangles.py")

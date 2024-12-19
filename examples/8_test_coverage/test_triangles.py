@@ -9,7 +9,7 @@ from triangles import valid, area, classify
 
 def test_valid():
     # NOTE: You should never type "== True".
-    assert valid((3, 4, -6))
+    assert valid((3, 4, 5))
     # NOTE: You should never type "== False".
     assert not valid((3, 4, 10))
     assert not valid((3, 4, 10, 20))
