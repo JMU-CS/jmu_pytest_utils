@@ -4,6 +4,7 @@ import importlib
 import json
 import os
 import pytest
+import random
 import sys
 import textwrap
 import types
@@ -11,9 +12,8 @@ import types
 from jmu_pytest_utils.common import run_command
 
 
-def return_random(*args, **kwargs):
+def _return_random(*args, **kwargs):
     """Function stub to replace the actual functions being tested."""
-    import random
     return random.random()
 
 
@@ -28,17 +28,16 @@ def inject_random(main_filename):
     module = importlib.import_module(module_name)
     for name, obj in vars(module).items():
         if isinstance(obj, types.FunctionType):
-            obj.__code__ = return_random.__code__
+            obj.__code__ = _return_random.__code__
 
 
-def process_results_json(status):
-    """Verify correctness in results.json file.
+def process_results_json(function, status, penalty):
+    """Verify correctness in the results.json file.
 
     Args:
+        function (function): Test function for score/weight.
         status (str): Check for "fail" or "pass" in status.
-
-    Returns:
-        int, str: Number of errors and corresponding output.
+        penalty (float): Points per incorrect test function.
     """
     if not os.path.exists("results.json"):
         pytest.fail("pytest failed to generate test results", False)
@@ -47,70 +46,76 @@ def process_results_json(status):
     os.remove("results.json")
 
     # Count how many test functions didn't pass/fail correctly
-    count = 0
+    points = 0
     if status == "fail":
         output = "random return values\n"
     else:
         output = "actual return values\n"
     for test in results["tests"]:
         if test["status"] != status + "ed":  # failed / passed
-            count += 1
+            points += penalty
             output += f"* {test['name']} did not {status}\n"
             test_output = test.get("output")
             if test_output:
                 output += textwrap.indent(test_output, "    ")
                 output += "\n"
-    return count, output
+
+    # If the test didn't pass, set the score and show output
+    if points:
+        weight = getattr(function, "weight", 0)
+        if weight:
+            setattr(function, "score", max(weight - points, 0))
+        pytest.fail(output)
 
 
-def assert_fail(main_filename, test_filename):
+def assert_fail(function, main_filename, test_filename, penalty=1):
     """Run pytest and assert that all tests fail.
 
     Note: The --jmu option of the jmu_pytest_utils plugin
     patches all functions in main_filename to return random.
 
     Args:
+        function (function): Test function for score/weight.
         main_filename (str): Name of the main file to test.
         test_filename (str): Name of the test file to run.
-
-    Returns:
-        int, str: Number of errors and corresponding output.
+        penalty (float): Points per incorrect test function.
     """
     run_command([
         "pytest",
         "--jmu=" + main_filename,
         test_filename
     ])
-    return process_results_json("fail")
+    process_results_json(function, "fail", penalty)
 
 
-def assert_pass(main_filename, test_filename):
+def assert_pass(function, main_filename, test_filename, penalty=1):
     """Run pytest and assert that all tests pass.
 
     Args:
+        function (function): Test function for score/weight.
         main_filename (str): Name of the main file to test.
         test_filename (str): Name of the test file to run.
-
-    Returns:
-        int, str: Number of errors and corresponding output.
+        penalty (float): Points per incorrect test function.
     """
     run_command([
         "pytest",
         "--jmu=assert_pass",
         test_filename
     ])
-    return process_results_json("pass")
+    process_results_json(function, "pass", penalty)
 
 
-def assert_cover(main_filename, test_filename, branches=False):
+def assert_cover(function, main_filename, test_filename, branches=False,
+                 line_penalty=1, branch_penalty=1):
     """Run pytest and analyze coverage results.
 
     Args:
+        function (function): Test function for score/weight.
         main_filename (str): Name of the main file to test.
         test_filename (str): Name of the test file to run.
-
-    Returns:
-        int, str: Number of missed and corresponding output.
+        branches (bool): Whether to report branch coverage.
+        line_penalty (float): Points per missed line.
+        branch_penalty (float): Points per missed branch.
     """
     run_command([
         "pytest",
@@ -126,22 +131,30 @@ def assert_cover(main_filename, test_filename, branches=False):
     os.remove("coverage.json")
 
     # Count how many lines were missed in each function
-    count = 0
+    points = 0
     output = "incomplete coverage\n"
     functions = coverage["files"][main_filename]["functions"]
     for name, data in functions.items():
         missing_lines = data.get("missing_lines", [])
         missing_branches = data.get("missing_branches", [])
-        missed = len(missing_lines) + len(missing_branches)
-        if missed:
-            count += missed
+
+        # Generate output of which lines/branches were missed
+        if missing_lines or missing_branches:
             output += f"* {name}\n"
             if missing_lines:
+                points += len(missing_lines) * line_penalty
                 output += "    Lines: "
                 output += str(missing_lines)[1:-1]
                 output += "\n"
             if missing_branches:
+                points += len(missing_branches) * branch_penalty
                 output += "    Branches: "
                 output += str(missing_branches)[1:-1]
                 output += "\n"
-    return count, output
+
+    # If the test didn't pass, set the score and show output
+    if points:
+        weight = getattr(function, "weight", 0)
+        if weight:
+            setattr(function, "score", max(weight - points, 0))
+        pytest.fail(output)

@@ -25,10 +25,10 @@ To build `autograder.zip`, run this command from an assignment's directory:
 * Automate test_submitted_files and submission limit
 * Eliminate the need to try-except importing modules
 * Fix issues with showing student output and security
+* Single library for autograding student's code+tests
 
 *Not yet finished:*
 
-* Single library for autograding student's code+tests
 * Multi-part assignments, each with its own config.sh
 * Prevent topics from "later" chapters (based on ast)
 
@@ -47,11 +47,11 @@ To build `autograder.zip`, run this command from an assignment's directory:
 * Output is hidden (student can't print the test arguments)
 * Security audit to prevent students from using the network
 * Command-line script for building autograder.zip archives
+* Test for correctness and code coverage of student's tests
 
 *Not yet implemented:*
 
-* Regular expression check (Ex: count comments)
-* Coverage of student's tests (work in progress)
+* Regular expression check (Ex: count number of comments)
 
 
 ## Related Work

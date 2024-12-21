@@ -10,7 +10,6 @@ The following "assignments" are used for testing `jmu_pytest_utils` and provided
 * [6_provided_data](6_provided_data) -- file I/O assignment
 * [7_class_package](7_class_package) -- classes and packages
 * [8_test_coverage](8_test_coverage) -- grading student's tests
-* 9_multiple_parts -- TODO
 
 
 ## Configuration
