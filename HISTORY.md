@@ -1,11 +1,16 @@
 # History
 
-For [CS 149][1], we used [jmu_gradescope_utils][2] to build autograders for most assignments from Spring 2022 to Fall 2024.
+For [CS 149][1] at JMU, we used [jmu_gradescope_utils][2] to build autograders for most assignments from Spring 2022 to Fall 2024.
 During this time, we transitioned from [unittest][3] to [pytest][4] for teaching students how to write their own tests.
 While students used pytest for assignments, faculty relied on unittest for autograders, which led to some confusion.
-Faculty also frequently duplicated code in autograders for tasks like checking required files and enforcing submission limits.
+Faculty also duplicated code in autograders for tasks like checking required files and enforcing submission limits.
 We faced additional challenges with the underlying [gradescope-utils][5] library, such as partial credit not working.
 To address these issues, we wrote [jmu_pytest_utils][6] as an independent package.
+`jmu_pytest_utils` simplifies autograder development and takes full advantage of pytest's advanced features.
+Related libraries include:
+
+* https://github.com/GRudolph/autograder_samples/tree/master/python3-pytest
+* https://github.com/ucsb-gradescope-tools/sample-python-pytest-autograder
 
 [1]: https://w3.cs.jmu.edu/cs149/f24/
 [2]: https://github.com/JMU-CS/jmu_python_gradescope_utils
@@ -13,13 +18,6 @@ To address these issues, we wrote [jmu_pytest_utils][6] as an independent packag
 [4]: https://docs.pytest.org/en/stable/
 [5]: https://github.com/gradescope/gradescope-utils
 [6]: https://github.com/JMU-CS/jmu_pytest_utils
-
-`jmu_pytest_utils` simplifies autograder development and takes full advantage of pytest's advanced features.
-Related libraries include:
-
-* https://github.com/GRudolph/autograder_samples/tree/master/python3-pytest
-* https://github.com/ucsb-gradescope-tools/sample-python-pytest-autograder
-
 
 ## Project Goals
 
