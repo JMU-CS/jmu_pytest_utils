@@ -1,6 +1,6 @@
 # Examples
 
-The following "assignments" are used for testing `jmu_pytest_utils` and provided as examples for writing tests:
+The following "assignments" are used for testing `jmu_pytest_utils` and provided as examples for writing your own autograders:
 
 * [1_hello_world](1_hello_world) -- minimal example
 * [2_basic_input](2_basic_input) -- program with user input
@@ -12,10 +12,33 @@ The following "assignments" are used for testing `jmu_pytest_utils` and provided
 * [8_test_coverage](8_test_coverage) -- grading student's tests
 
 
+## API Docs
+
+Please refer to the docstrings in the files below.
+
+Most tests will import the following two modules:
+
+* [`jmu_pytest_utils.common`](../jmu_pytest_utils/common.py)
+* [`jmu_pytest_utils.decorators`](../jmu_pytest_utils/decorators.py)
+
+Tests that analyze the student's *code* import:
+
+* [`jmu_pytest_utils.audit`](../jmu_pytest_utils/audit.py)
+
+Tests that analyze the student's *tests* import:
+
+* [`jmu_pytest_utils.coverage`](../jmu_pytest_utils/coverage.py)
+
+And of course, you might also import pytest:
+
+* [API Reference - pytest documentation](https://docs.pytest.org/en/stable/reference/reference.html)
+
+
 ## Configuration
 
 During autograder setup, a configuration script named [`config.sh`](../jmu_pytest_utils/template/config.sh) is automatically generated.
 This script sets the environment variables used by [`run_autograder`](../jmu_pytest_utils/template/run_autograder) and other grading scripts.
+
 You can override the default values in `config.sh` by defining global variables with the same names.
 For example, to limit the number of submissions, you can add the following line to your test module (after the `import` statements):
 
@@ -38,36 +61,17 @@ For example, to specify the files that students must submit, add a line like thi
 SUBMISSION_FILES = ["file1.py", "file2.py"]
 ```
 
-When looking at `config.sh`, note that Bash and Python represent the list of files differently.
+When looking at `config.sh`, note that Bash and Python represent a list of files differently.
 Bash uses a space-delimited string (Ex: `"file1.py file2.py"`), but Python uses a list of strings.
-See [`config.sh`](../jmu_pytest_utils/template/config.sh) for the complete list of variables and default values.
-
-
-## Documentation
-
-Please refer to the docstrings in the files below.
-
-Most tests will import the following two modules:
-
-* [`jmu_pytest_utils.common`](../jmu_pytest_utils/common.py)
-* [`jmu_pytest_utils.decorators`](../jmu_pytest_utils/decorators.py)
-
-Tests that analyze the student's *code* also import:
-
-* [`jmu_pytest_utils.audit`](../jmu_pytest_utils/audit.py)
-
-And of course, you will often import `pytest`:
-
-* [API Reference - pytest documentation](https://docs.pytest.org/en/stable/reference/reference.html)
 
 
 ## Possible Results
 
-The [`run_autograder`](../jmu_pytest_utils/template/run_autograder) script initially performs the following checks.
+The [`run_autograder`](../jmu_pytest_utils/template/run_autograder) script initially performs the following checks initially.
 If any of these checks fail, the assignment receives 0 points, and the submission does not count toward the limit.
 
 * Missing Files -- were all required files submitted?
-* Extra Files -- were unnecessary files submitted?
+* Extra Files -- were any unneeded files submitted?
 * Compiler Error -- does submitted code compile?
 * Security Audit -- are forbidden functions used?
 * Submission Limit -- is this submission allowed?

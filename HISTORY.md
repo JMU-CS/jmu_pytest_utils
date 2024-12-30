@@ -5,8 +5,7 @@ During this time, we transitioned from [unittest][3] to [pytest][4] for teaching
 While students used pytest for assignments, faculty relied on unittest for autograders, which led to some confusion.
 Faculty also duplicated code in autograders for tasks like checking required files and enforcing submission limits.
 We faced additional challenges with the underlying [gradescope-utils][5] library, such as partial credit not working.
-To address these issues, we wrote [jmu_pytest_utils][6] as an independent package.
-`jmu_pytest_utils` simplifies autograder development and takes full advantage of pytest's advanced features.
+To address these issues, we wrote [jmu_pytest_utils][6] as an independent package, which simplifies autograder development and takes full advantage of pytest's advanced features.
 Related libraries include:
 
 * https://github.com/GRudolph/autograder_samples/tree/master/python3-pytest
