@@ -6,10 +6,6 @@ While students used pytest for assignments, faculty relied on unittest for autog
 Faculty also duplicated code in autograders for tasks like checking required files and enforcing submission limits.
 We faced additional challenges with the underlying [gradescope-utils][5] library, such as partial credit not working.
 To address these issues, we wrote [jmu_pytest_utils][6] as an independent package, which simplifies autograder development and takes full advantage of pytest's advanced features.
-Related libraries include:
-
-* https://github.com/GRudolph/autograder_samples/tree/master/python3-pytest
-* https://github.com/ucsb-gradescope-tools/sample-python-pytest-autograder
 
 [1]: https://w3.cs.jmu.edu/cs149/f24/
 [2]: https://github.com/JMU-CS/jmu_python_gradescope_utils
@@ -17,6 +13,7 @@ Related libraries include:
 [4]: https://docs.pytest.org/en/stable/
 [5]: https://github.com/gradescope/gradescope-utils
 [6]: https://github.com/JMU-CS/jmu_pytest_utils
+
 
 ## Project Goals
 
@@ -34,7 +31,7 @@ Related libraries include:
 * Reject use of language features from later chapters
 
 
-## Features
+## New Features
 
 * Installs the same Python version as in the computer labs
 * Runs Python within a virtual environment for consistency
@@ -52,3 +49,9 @@ Related libraries include:
 *Not yet implemented:*
 
 * Regular expression check (Ex: count number of comments)
+
+
+## Related Work
+
+* https://github.com/GRudolph/autograder_samples/tree/master/python3-pytest
+* https://github.com/ucsb-gradescope-tools/sample-python-pytest-autograder

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="jmu_pytest_utils",
-    version="0.1",
+    version="1.0",
     description="pytest plugin for Gradescope autograders",
     author="Chris Mayfield",
     author_email="mayfiecs@jmu.edu",
