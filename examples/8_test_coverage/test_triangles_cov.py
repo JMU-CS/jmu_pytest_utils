@@ -5,11 +5,11 @@ from jmu_pytest_utils.coverage import assert_fail, assert_pass, assert_cover
 from jmu_pytest_utils.decorators import required, weight
 
 SUBMISSION_FILES = ["test_triangles.py"]
-ADDITIONAL_FILES = ["triangles.py"]
 
 
 @weight(1)
 def test_pep8():
+    """Test code passes PEP 8 -- docstrings are not required"""
     assert_pep8("test_triangles.py")
 
 
