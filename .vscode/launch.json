@@ -33,7 +33,7 @@
             "program": "${workspaceFolder}/jmu_pytest_utils/audit.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/examples/8_test_coverage",
-            "args": ["extra.py"],
+            "args": ["test_triangles.py"],
         },
         {
             "name": "builder.py",

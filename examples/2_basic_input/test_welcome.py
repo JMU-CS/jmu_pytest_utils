@@ -5,12 +5,15 @@ from jmu_pytest_utils.decorators import required, weight
 FILENAME = "welcome.py"
 
 # Autograder settings (used to generate config.sh)
+# You don't need to set these variables unless you want to override
+# the default build. See, e.g., 4_substitution and 8_test_coverage.
 SUBMISSION_FILES = [FILENAME]
 AUTOGRADER_TESTS = ["test_welcome.py"]
 ADDITIONAL_FILES = []
 SUBMISSION_LIMIT = 10
 FUNCTION_TIMEOUT = 1
 SCHOOL_TIME_ZONE = "US/Mountain"
+INSTALL_PYTHON_V = 3.13
 
 
 @required()

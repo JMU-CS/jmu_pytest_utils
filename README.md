@@ -13,27 +13,31 @@ To build `autograder.zip`, run this command from an assignment's directory:
     jmu_pytest_utils build
 
 [1]: https://docs.pytest.org/en/stable/how-to/plugins.html
-[2]: https://github.com/JMU-CS/jmu_python_gradescope_utils/
+[2]: https://github.com/JMU-CS/jmu_python_gradescope_utils
 [3]: https://github.com/gradescope/gradescope-utils
 
 
-## Goals
+## Project Goals
+
+We used `jmu_gradescope_utils` from Spring 2022 to Fall 2024 for most CS 149 assignments.
 
 * Use `pytest` instead of (or in addition to) `unittest`
 * Be able to run tests before deploying to Gradescope
-* Eliminate the need for config files and directories
+* Eliminate the need for config.ini files and directories
 * Automate test_submitted_files and submission limit
-* Eliminate the need to try-except importing modules
-* Fix issues with showing student output and security
+* Eliminate the need for try-except importing modules
+* Fix security issues including student output visibility
 * Single library for autograding student's code+tests
 
 *Not yet finished:*
 
 * Multi-part assignments, each with its own config.sh
-* Prevent topics from "later" chapters (based on ast)
+* Reject use of language features from later chapters
 
 
 ## Features
+
+Here is a list of minor differences between `jmu_pytest_utils` and `jmu_gradescope_utils`.
 
 * Installs the same Python version as in the computer labs
 * Runs Python within a virtual environment for consistency
@@ -41,13 +45,12 @@ To build `autograder.zip`, run this command from an assignment's directory:
 * Submission limit in config enforced before running tests
 * Automatically changes directory to the file being graded
 * Test name defaults to the function name if no docstring
-* Partial credit by setting test_function.score attribute
+* Partial credit by setting the test_function.score attribute
 * Custom output by setting test_function.output attribute
 * Test functions automatically time out (default 5 seconds)
 * Output is hidden (student can't print the test arguments)
 * Security audit to prevent students from using the network
 * Command-line script for building autograder.zip archives
-* Test for correctness and code coverage of student's tests
 
 *Not yet implemented:*
 

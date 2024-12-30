@@ -6,7 +6,7 @@ The following "assignments" are used for testing `jmu_pytest_utils` and provided
 * [2_basic_input](2_basic_input) -- program with user input
 * [3_extra_credit](3_extra_credit) -- custom output and score
 * [4_substitution](4_substitution) -- variable from autograder
-* [5_import_funcs](5_import_funcs) -- import and test functions
+* [5_import_funcs](5_import_funcs) -- module with functions
 * [6_provided_data](6_provided_data) -- file I/O assignment
 * [7_class_package](7_class_package) -- classes and packages
 * [8_test_coverage](8_test_coverage) -- grading student's tests
