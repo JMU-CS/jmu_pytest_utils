@@ -71,6 +71,7 @@ def load_cfg():
                 name, value = line[7:].rstrip().split("=")
                 value = value[1:-1]  # remove quotes
                 if name.endswith("FILES") or name.endswith("TESTS"):
+                    value = value.replace("/", os.path.sep)
                     value = value.split()  # space delimited
                 globals()[name] = value
 
@@ -134,9 +135,10 @@ def make_cfg():
     with open("config.sh") as file:
         text = file.read()
     text = text.format(
-        " ".join(SUBMISSION_FILES),
-        " ".join(AUTOGRADER_TESTS),
-        " ".join(ADDITIONAL_FILES),
+        # Use posix path separators for config.sh
+        " ".join(SUBMISSION_FILES).replace("\\", "/"),
+        " ".join(AUTOGRADER_TESTS).replace("\\", "/"),
+        " ".join(ADDITIONAL_FILES).replace("\\", "/"),
         SUBMISSION_LIMIT,
         FUNCTION_TIMEOUT,
         SCHOOL_TIME_ZONE,
