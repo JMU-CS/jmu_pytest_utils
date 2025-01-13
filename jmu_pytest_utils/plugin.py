@@ -109,6 +109,13 @@ def pytest_sessionfinish(session, exitstatus):
             test["score"] = score
             test["max_score"] = weight
 
+        # Get any leaderboard entries set during the test
+        leaderboard = getattr(item.function, "leaderboard", [])
+        if leaderboard:
+            if "leaderboard" not in RESULTS:
+                RESULTS["leaderboard"] = []
+            RESULTS["leaderboard"].extend(leaderboard)
+
         # Initial output can be set during the test
         output = getattr(item.function, "output", "")
         for r in reports:

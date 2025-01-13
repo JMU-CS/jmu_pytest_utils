@@ -4,9 +4,13 @@ https://docs.python.org/3/library/ast.html#node-classes
 https://saligrama.io/blog/gradescope-autograder-security/
 """
 
+__all__ = ['count_calls', 'count_nodes', 'count_regex_matches']
+
 import ast
+import re
 from collections import Counter
 from jmu_pytest_utils.common import chdir_test
+from jmu_pytest_utils.remove_comments import remove_comments
 import sys
 
 
@@ -96,6 +100,25 @@ def count_nodes(filename):
         source = file.read()
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
+
+def count_regex_matches(filename, pattern, strip_comments=True):
+    """Count the number of regex pattern matches in code.
+
+    Args:
+        filename (str): The source file to parse.
+        pattern (str): Regular expression pattern to match.
+        strip_comments (bool): Whether to remove comments before matching. Defaults to True.
+
+    Returns:
+        int: Number of matches found.
+    """
+    chdir_test()
+    if strip_comments:
+        source = remove_comments(filename)
+    else:
+        with open(filename, encoding="utf-8") as file:
+            source = file.read()
+    return len(re.findall(pattern, source))
 
 
 def main(paths):
