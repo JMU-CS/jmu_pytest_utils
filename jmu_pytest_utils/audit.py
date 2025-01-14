@@ -101,6 +101,19 @@ def count_nodes(filename):
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
 
+def count_while_loops(filename):
+    """Count the number of while loops in a program.
+
+    Args:
+        filename (str): The source file to parse.
+
+    Returns:
+        int: Number of while loops found.
+    """
+    nodes = count_nodes(filename)
+    return nodes['While']
+
+
 def count_regex_matches(filename, pattern, strip_comments=True):
     """Count the number of regex pattern matches in code.
 
