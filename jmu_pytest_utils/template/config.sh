@@ -17,18 +17,23 @@ export AUTOGRADER_TESTS="{1}"
 # Default: blank
 export ADDITIONAL_FILES="{2}"
 
+# Packages to install with pip
+# Example: "beautifulsoup4 requests"
+# Default: blank
+export REQUIREMENTS_TXT="{3}"
+
 # Max submissions that can run
 # Default: -1
-export SUBMISSION_LIMIT="{3}"
+export SUBMISSION_LIMIT="{4}"
 
 # Max seconds per test function
 # Default: 5
-export FUNCTION_TIMEOUT="{4}"
+export FUNCTION_TIMEOUT="{5}"
 
 # Time zone for submissions
 # Default: US/Eastern
-export SCHOOL_TIME_ZONE="{5}"
+export SCHOOL_TIME_ZONE="{6}"
 
 # Python version to install
 # Default: 3.12
-export INSTALL_PYTHON_V="{6}"
+export INSTALL_PYTHON_V="{7}"

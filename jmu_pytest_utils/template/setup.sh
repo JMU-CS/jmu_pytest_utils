@@ -15,7 +15,7 @@ source .venv/bin/activate
 pip install --upgrade pip
 
 # Install libraries
-pip install git+https://github.com/JMU-CS/jmu_pytest_utils.git
+pip install git+https://github.com/JMU-CS/jmu_pytest_utils.git@csm
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi

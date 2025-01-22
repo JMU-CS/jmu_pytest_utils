@@ -1,6 +1,7 @@
 """Common test functions used in many autograders."""
 
 import inspect
+import json
 import os
 import pytest
 import subprocess
@@ -18,6 +19,23 @@ def chdir_test():
             dirname = os.path.dirname(frame_info.filename)
             os.chdir(dirname)
             break
+
+
+def get_username(default="username"):
+    """Get the student's username from the submission metadata.
+
+    Args:
+        default (str): Value to return if metadata not found.
+
+    Returns:
+        str: The student's email address up to the @ symbol.
+    """
+    try:
+        with open("/autograder/submission_metadata.json") as file:
+            metadata = json.load(file)
+            return metadata["users"][0]["email"].split("@")[0]
+    except FileNotFoundError:
+        return default
 
 
 def _get_cfg(filename):

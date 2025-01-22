@@ -22,12 +22,13 @@ ZIP_FILENAME = f"autograder_{os.path.basename(os.getcwd())}.zip"
 
 def init_cfg():
     """Initialize global variables with default values."""
-    global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES
+    global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES, REQUIREMENTS_TXT
     global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE, INSTALL_PYTHON_V
 
     SUBMISSION_FILES = []
     AUTOGRADER_TESTS = []
     ADDITIONAL_FILES = []
+    REQUIREMENTS_TXT = []
     SUBMISSION_LIMIT = os.getenv("SUBMISSION_LIMIT", -1)
     FUNCTION_TIMEOUT = os.getenv("FUNCTION_TIMEOUT", 5)
     SCHOOL_TIME_ZONE = os.getenv("SCHOOL_TIME_ZONE", "US/Eastern")
@@ -107,8 +108,8 @@ def make_cfg():
     for filename in test_files:
         module_name = filename[:-3].replace(os.path.sep, ".")
         module = importlib.import_module(module_name)
-        for name in ["SUBMISSION_FILES", "AUTOGRADER_TESTS", "ADDITIONAL_FILES",
-                     "SUBMISSION_LIMIT", "FUNCTION_TIMEOUT", "SCHOOL_TIME_ZONE"]:
+        for name in ["SUBMISSION_FILES", "AUTOGRADER_TESTS", "ADDITIONAL_FILES", "REQUIREMENTS_TXT",
+                     "SUBMISSION_LIMIT", "FUNCTION_TIMEOUT", "SCHOOL_TIME_ZONE", "INSTALL_PYTHON_V"]:
             if hasattr(module, name):
                 globals()[name] = getattr(module, name)
 
@@ -139,6 +140,7 @@ def make_cfg():
         " ".join(SUBMISSION_FILES).replace("\\", "/"),
         " ".join(AUTOGRADER_TESTS).replace("\\", "/"),
         " ".join(ADDITIONAL_FILES).replace("\\", "/"),
+        " ".join(REQUIREMENTS_TXT).replace("\\", "/"),
         SUBMISSION_LIMIT,
         FUNCTION_TIMEOUT,
         SCHOOL_TIME_ZONE,
@@ -165,6 +167,7 @@ def build_cmd(setup=False):
     print("  SUBMISSION_FILES =", SUBMISSION_FILES)
     print("  AUTOGRADER_TESTS =", AUTOGRADER_TESTS)
     print("  ADDITIONAL_FILES =", ADDITIONAL_FILES)
+    print("  REQUIREMENTS_TXT =", REQUIREMENTS_TXT)
     print("  SUBMISSION_LIMIT =", SUBMISSION_LIMIT)
     print("  FUNCTION_TIMEOUT =", FUNCTION_TIMEOUT)
     print("  SCHOOL_TIME_ZONE =", SCHOOL_TIME_ZONE)
@@ -180,6 +183,16 @@ def build_cmd(setup=False):
                 function = getattr(module, name)
                 points += getattr(function, "weight", 0)
     print(f"\033[1;34mAutograder Points: {points}\033[0m")
+
+    # Generate requirements.txt file if needed
+    if REQUIREMENTS_TXT:
+        if not os.path.exists("requirements.txt"):
+            print("Creating requirements.txt")
+            with open("requirements.txt", "w") as file:
+                for line in REQUIREMENTS_TXT:
+                    file.write(line + "\n")
+        else:
+            print("\033[1;31mIgnoring REQUIREMENTS_TXT (requirements.txt exists)\033[0m")
 
     # Copy template files if not already exist
     if setup:
@@ -250,6 +263,13 @@ def clean_cmd():
         delete_file(filename, "previous run's")
     for dirname in CACHE_DIRS:
         shutil.rmtree(dirname, True)
+
+    # Delete requirements.txt if auto generated
+    if "REQUIREMENTS_TXT" in globals() and REQUIREMENTS_TXT:
+        with open("requirements.txt") as file:
+            lines = [line.rstrip() for line in file]
+        if lines == REQUIREMENTS_TXT:
+            delete_file("requirements.txt", "auto generated")
 
     # Delete template files (if not modified)
     for filename in CONFIG_FILES + SCRIPT_FILES:
