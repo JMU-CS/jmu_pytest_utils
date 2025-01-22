@@ -108,6 +108,8 @@ def main(paths):
         print(f"{path}:{node.lineno}:{node.col_offset+1} {message}")
     # parse each source file
     for path in paths:
+        if not path.endswith(".py"):
+            continue
         with open(path, encoding="utf-8") as file:
             source = file.read()
         tree = ast.parse(source, path)
