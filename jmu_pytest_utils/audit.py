@@ -69,7 +69,7 @@ def count_calls(filename, func_id):
 
     Args:
         filename (str): The source file to parse.
-        func_id (str): Function name (Ex: "print").
+        func_id (str): Function/method name (Ex: "print").
 
     Returns:
         int: Number of times the function is called.
@@ -81,7 +81,11 @@ def count_calls(filename, func_id):
     count = 0
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
+            # plain function calls
             if isinstance(node.func, ast.Name) and node.func.id == func_id:
+                count += 1
+            # method/attribute calls
+            if isinstance(node.func, ast.Attribute) and node.func.attr == func_id:
                 count += 1
     return count
 

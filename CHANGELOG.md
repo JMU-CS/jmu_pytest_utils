@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- leaderboard functionality via function attribute (#1)
+- leaderboard functionality via test function (#1)
 - regex auditing (from `jmu_gradescope_utils`)
 - `count_while_loops()` function in audit.py
 - `REQUIREMENTS_TXT` configuration option (#2)
@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - allow students to submit any type of file (#4)
+- `count_calls()` also counts methods (#5)
 
 ### Changed
 
