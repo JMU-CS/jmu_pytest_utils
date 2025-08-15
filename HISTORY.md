@@ -45,9 +45,6 @@ To address these issues, we wrote [jmu_pytest_utils][6] as an independent packag
 * Output is hidden (student can't print the test arguments)
 * Security audit to prevent students from using the network
 * Command-line script for building autograder.zip archives
-
-*Not yet implemented:*
-
 * Regular expression check (Ex: count number of comments)
 
 

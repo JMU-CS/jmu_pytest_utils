@@ -4,7 +4,7 @@ https://docs.python.org/3/library/ast.html#node-classes
 https://saligrama.io/blog/gradescope-autograder-security/
 """
 
-__all__ = ['count_calls', 'count_nodes', 'count_regex_matches']
+__all__ = ['count_calls', 'count_nodes', 'count_while_loops', 'count_regex_matches']
 
 import ast
 import re
