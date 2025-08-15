@@ -101,6 +101,7 @@ def count_nodes(filename):
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
 
+
 def count_while_loops(filename):
     """Count the number of while loops in a program.
 
