@@ -3,6 +3,7 @@
         "**/__pycache__": true,
         "**/.pytest_cache": true,
         "**/.coverage": true,
+        "**/.ruff_cache": true,
     },
     "python.testing.pytestArgs": [
         ".",

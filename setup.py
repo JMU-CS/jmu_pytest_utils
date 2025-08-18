@@ -21,6 +21,7 @@ setup(
         "pytest-cov",
         "pytest-timeout",
         "pytz",
+        "ruff",
     ],
     entry_points={
         "console_scripts": [

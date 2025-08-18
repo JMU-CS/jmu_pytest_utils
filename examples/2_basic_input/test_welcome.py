@@ -1,5 +1,5 @@
 from jmu_pytest_utils.audit import count_calls
-from jmu_pytest_utils.common import assert_pep8, assert_docs, run_module
+from jmu_pytest_utils.common import ruff_check, run_module
 from jmu_pytest_utils.decorators import required, weight
 
 FILENAME = "welcome.py"
@@ -25,8 +25,9 @@ def test_two_prints():
 @weight(2)
 def test_pep8_docs():
     """PEP 8 and docstring"""
-    assert_pep8(FILENAME)
-    assert_docs(FILENAME)
+    # assert_pep8(FILENAME)
+    # assert_docs(FILENAME)
+    ruff_check(FILENAME)
 
 
 @weight(4)

@@ -8,8 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
 
-## [1.1.0] - 2025-08-15
+- support for `ruff` style checker
+
+
+## [1.1.0] - 2025-08-14
 
 ### Added
 
