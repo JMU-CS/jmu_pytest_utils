@@ -1,7 +1,8 @@
 line-length = 100
+preview = true
 
 [lint]
-select = ["D", "E", "F", "C90", "N"]
+select = ["D", "DOC", "E", "F", "C90", "N"]
 ignore = [
   "D202", "D203", "D213", "D400", "D401", "D413",
   "E226", "N802", "N818"

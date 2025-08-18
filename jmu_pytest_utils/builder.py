@@ -90,7 +90,7 @@ def make_cfg():
     test_files = []
     data_files = []
     for root, _, files in os.walk("."):
-        if os.path.basename(root) in CACHE_DIRS:
+        if any(name in root for name in CACHE_DIRS):
             continue
         for file in sorted(files):
             if file not in ignore:
