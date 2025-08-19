@@ -1,0 +1,10 @@
+preview = true
+
+[lint]
+select = ["D", "DOC"]
+ignore = [
+  "D202", "D203", "D213", "D400", "D401", "D413"
+]
+
+[lint.per-file-ignores]
+"test_*" = ["D1", "D415"]

@@ -81,17 +81,25 @@ def assert_docs(filename):
                     line for line in result.stdout.splitlines()), False)
 
 
-def ruff_check(filename):
-    """Run 'ruff check' with ruff.toml on the given file.
+def ruff_check(filename, code=True, docs=True):
+    """Run 'ruff check' on the given file.
 
     Args:
         filename (str): The source file to check.
+        code (bool): Check for code style errors.
+        docs (bool): Check for docstring errors.
     """
     chdir_test()
-    result = subprocess.run(["ruff", "check", filename, "--config", _get_cfg("ruff.toml")],
-                            capture_output=True, text=True)
-    if result.returncode:
-        pytest.fail("\n".join("  " + line for line in result.stdout.splitlines()), False)
+    if code:
+        result = subprocess.run(["ruff", "check", filename, "--config", _get_cfg("ruff-code.toml")],
+                                capture_output=True, text=True)
+        if result.returncode:
+            pytest.fail("\n".join("  " + line for line in result.stdout.splitlines()), False)
+    if docs:
+        result = subprocess.run(["ruff", "check", filename, "--config", _get_cfg("ruff-docs.toml")],
+                                capture_output=True, text=True)
+        if result.returncode:
+            pytest.fail("\n".join("  " + line for line in result.stdout.splitlines()), False)
 
 
 def run_command(args, input=None):
