@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - support for `ruff` style checker
-- `get_source_code()` function in common.py
+- `get_source_code()` function in audit.py
+- `count_comments()` function in audit.py
 
 ### Fixed
 

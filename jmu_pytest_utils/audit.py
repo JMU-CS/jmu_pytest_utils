@@ -9,6 +9,7 @@ __all__ = ['count_calls', 'count_nodes', 'count_while_loops', 'count_regex_match
 import ast
 import re
 import sys
+import tokenize
 from collections import Counter
 
 from jmu_pytest_utils.common import chdir_test
@@ -84,6 +85,22 @@ def count_calls(filename, func_id):
                 count += 1
             # method/attribute calls
             if isinstance(node.func, ast.Attribute) and node.func.attr == func_id:
+                count += 1
+    return count
+
+
+def count_comments(filename):
+    """Count the number of # comments in a program.
+
+    Returns:
+        int: Number of end-of-line comments found.
+    """
+    count = 0
+    chdir_test()
+    with open(filename, encoding="utf-8") as file:
+        tokens = tokenize.generate_tokens(file.readline)
+        for tok_type, _, _, _, _ in tokens:
+            if tok_type == tokenize.COMMENT:
                 count += 1
     return count
 
