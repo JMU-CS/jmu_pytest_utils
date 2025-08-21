@@ -8,11 +8,11 @@ __all__ = ['count_calls', 'count_nodes', 'count_while_loops', 'count_regex_match
 
 import ast
 import re
+import sys
 from collections import Counter
+
 from jmu_pytest_utils.common import chdir_test
 from jmu_pytest_utils.remove_comments import remove_comments
-import sys
-
 
 # The following modules and functions are not allowed in student code,
 # because they can make the autograder vulnerable to various attacks.
@@ -74,9 +74,7 @@ def count_calls(filename, func_id):
     Returns:
         int: Number of times the function is called.
     """
-    chdir_test()
-    with open(filename, encoding="utf-8") as file:
-        source = file.read()
+    source = get_source_code(filename)
     tree = ast.parse(source, filename)
     count = 0
     for node in ast.walk(tree):
@@ -99,9 +97,7 @@ def count_nodes(filename):
     Returns:
         Counter: Maps AST node names to counts.
     """
-    chdir_test()
-    with open(filename, encoding="utf-8") as file:
-        source = file.read()
+    source = get_source_code(filename)
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
 
@@ -125,18 +121,29 @@ def count_regex_matches(filename, pattern, strip_comments=True):
     Args:
         filename (str): The source file to parse.
         pattern (str): Regular expression pattern to match.
-        strip_comments (bool): Whether to remove comments before matching. Defaults to True.
+        strip_comments (bool): Whether to remove comments before matching.
 
     Returns:
         int: Number of matches found.
     """
-    chdir_test()
+    source = get_source_code(filename)
     if strip_comments:
-        source = remove_comments(filename)
-    else:
-        with open(filename, encoding="utf-8") as file:
-            source = file.read()
+        source = remove_comments(source)
     return len(re.findall(pattern, source))
+
+
+def get_source_code(filename):
+    """Read the contents of a source file.
+
+    Args:
+        filename (str): The source file to read.
+
+    Returns:
+        str: Contents of the source file.
+    """
+    chdir_test()
+    with open(filename, encoding="utf-8") as file:
+        return file.read()
 
 
 def main(paths):

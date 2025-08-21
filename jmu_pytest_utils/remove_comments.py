@@ -1,6 +1,6 @@
-""" Strip comments and docstrings from a file."""
+"""Strip comments and docstrings from a file."""
 
-# Source: https://gist.github.com/BroHui/aca2b8e6e6bdf3cb4af4b246c9837fa3
+# Based on: https://gist.github.com/BroHui/aca2b8e6e6bdf3cb4af4b246c9837fa3
 
 import sys
 import token
@@ -8,16 +8,22 @@ import tokenize
 import io
 
 
-def remove_comments(fname):
-    """Run on just one file."""
-    source = open(fname, encoding="utf-8")
+def remove_comments(source):
+    """Remove comments from the given code.
+
+    Args:
+        source (str): Original source code.
+
+    Returns:
+        str: Modified source code.
+    """
     mod = io.StringIO()  # open(fname + ",strip", "w")
 
     prev_toktype = token.INDENT
     last_lineno = -1
     last_col = 0
 
-    tokgen = tokenize.generate_tokens(source.readline)
+    tokgen = tokenize.generate_tokens(io.StringIO(source).readline)
     for toktype, ttext, (slineno, scol), (elineno, ecol), ltext in tokgen:
         if 0:  # Change to if 1 to see the tokens fly by.
             print("%10s %-14s %-20r %r" % (

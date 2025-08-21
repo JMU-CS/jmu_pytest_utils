@@ -1,3 +1,4 @@
+from jmu_pytest_utils.audit import count_regex_matches, count_while_loops
 from jmu_pytest_utils.common import assert_pep8, assert_docs, chdir_test
 from jmu_pytest_utils.decorators import weight
 import os
@@ -18,7 +19,13 @@ def test_pep8_docs():
     assert_docs(FILENAME)
 
 
-@weight(4)
+@weight(2)
+def test_approach():
+    assert count_while_loops(FILENAME) == 0
+    assert count_regex_matches(FILENAME, r"\bwith\b") == 2
+
+
+@weight(3)
 def test_count_flowers():
     assert count_iris("data/iris.csv") == {"setosa": 50, "versicolor": 50, "virginica": 50}
     assert count_iris("data/iris2.csv") == {"setosa": 45, "versicolor": 40, "virginica": 35}
@@ -41,7 +48,7 @@ def helper(name):
     assert obtained == expected
 
 
-@weight(4)
+@weight(3)
 def test_filter_adult():
     helper("adult1")
     helper("adult2")
