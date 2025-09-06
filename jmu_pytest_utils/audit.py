@@ -4,7 +4,14 @@ https://docs.python.org/3/library/ast.html#node-classes
 https://saligrama.io/blog/gradescope-autograder-security/
 """
 
-__all__ = ['count_calls', 'count_nodes', 'count_while_loops', 'count_regex_matches']
+__all__ = [
+    "count_calls",
+    "count_comments",
+    "count_nodes",
+    "count_while_loops",
+    "count_regex_matches",
+    "get_source_code",
+]
 
 import ast
 import re
@@ -107,6 +114,13 @@ def count_comments(filename):
 
 def count_nodes(filename):
     """Count the number of AST nodes in a program.
+
+    Some nodes that autograders often check include "If", "IfExp",
+    "For", "While", "Subscript", "ListComp", "SetComp", "DictComp",
+    "GeneratorExp", and "Lambda".
+
+    See https://docs.python.org/3/library/ast.html for the complete
+    list of node names.
 
     Args:
         filename (str): The source file to parse.
