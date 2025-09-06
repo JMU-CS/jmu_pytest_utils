@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- TBD
+
+## [1.2.0] - 2025-09-06
+
 ### Added
 
 - support for `ruff` style checker
@@ -18,7 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- don't include files in cache dirs
+- the `build` command ignores files in cache dirs
+
+### Changed
+
+- setup.sh installs same version of jmu_pytest_utils
 
 
 ## [1.1.0] - 2025-08-14
@@ -48,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release; see [v1.0 HISTORY.md](https://github.com/JMU-CS/jmu_pytest_utils/blob/v1.0/HISTORY.md)
 
 
-[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.0...v1.1.0
 [1.0]: https://github.com/JMU-CS/jmu_pytest_utils/releases/tag/v1.0

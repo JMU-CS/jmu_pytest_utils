@@ -20,4 +20,6 @@ To build `autograder.zip`, run this command from an assignment's directory:
 
 See the [examples](examples) directory for documentation and test assignments.
 
+See the [CHANGELOG](CHANGELOG.md) for release notes and recently added features.
+
 See the [HISTORY](HISTORY.md) file for background information about the project.
