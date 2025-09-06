@@ -1,4 +1,5 @@
 from jmu_pytest_utils.common import assert_pep8, assert_docs
+from jmu_pytest_utils.common import within_deadline, postpone_tests
 from jmu_pytest_utils.decorators import weight
 
 from clock import time_str, add_time
@@ -39,3 +40,7 @@ def test_add_time_hard():
     """add_time() hard cases"""
     assert add_time(0, 0, 5*24*60) == "12:00 AM", "5 days after midnight"
     assert add_time(1, 15, 2*24*60 + 75) == "02:30 AM", "2 days and 75 minutes after 01:15 AM"
+
+
+if within_deadline():
+    postpone_tests()

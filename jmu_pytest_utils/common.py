@@ -1,5 +1,6 @@
 """Common test functions used in many autograders."""
 
+from datetime import datetime, timedelta, timezone
 import inspect
 import json
 import os
@@ -13,10 +14,10 @@ def chdir_test():
     This function ensures that tests run smoothly both offline
     (in VS Code) and on Gradescope.
     """
-    for frame_info in inspect.stack()[1:]:
-        basename = os.path.basename(frame_info.filename)
+    for frameinfo in inspect.stack():
+        basename = os.path.basename(frameinfo.filename)
         if basename.startswith("test_"):
-            dirname = os.path.dirname(frame_info.filename)
+            dirname = os.path.dirname(frameinfo.filename)
             os.chdir(dirname)
             break
 
@@ -132,3 +133,77 @@ def run_module(filename, input=None):
         str: Captured output from the child process.
     """
     return run_command(["python", filename], input)
+
+
+def within_deadline(before=5, after=5):
+    """Check if the current time is within the user's submission window.
+
+    The window is extended `before` minutes prior to the release date
+    and `after` minutes beyond the due date (or late due date, if set).
+
+    Args:
+        before (int): Minutes to extend the window before the release date.
+        after (int): Minutes to extend the window after the due/late date.
+
+    Returns:
+        bool: True if the current time is within the submission window.
+    """
+
+    # Get the submission metadata
+    try:
+        with open("/autograder/submission_metadata.json") as file:
+            metadata = json.load(file)
+    except FileNotFoundError:
+        return False
+
+    # Get the user's assignment dates
+    assignment = metadata["users"][0]["assignment"]
+    beg = datetime.fromisoformat(assignment["release_date"])
+    end = datetime.fromisoformat(assignment["due_date"])
+    late = assignment.get("late_due_date")
+    if late is not None:
+        end = datetime.fromisoformat(late)
+
+    # Extend the submission window
+    beg -= timedelta(minutes=before)
+    end += timedelta(minutes=after)
+
+    # Compare with current time
+    now = datetime.now(timezone.utc)
+    return beg <= now <= end
+
+
+def postpone_tests(
+    title="Ready to grade",
+    message="Your submission has been received and will be graded manually.",
+):
+    """Replace all tests in the calling test module with a single placeholder.
+
+    This function is used to hide autograder feedback during an assignment or
+    exam. It deletes all existing test functions and defines a new function
+    named `test_postpone` that carries the given title and message.
+
+    Args:
+        title (str): Docstring for the new test (rendered as the test's name).
+        message (str): Message assigned to the new test's `output` attribute.
+    """
+
+    # Get the test module
+    for frameinfo in inspect.stack():
+        module = inspect.getmodule(frameinfo.frame)
+        if module and module.__name__.startswith("test_"):
+            test_module = module
+            break
+
+    # Delete all test functions
+    g = test_module.__dict__
+    for name in list(g.keys()):
+        if name.startswith("test_"):
+            del g[name]
+
+    # Define the fallback test
+    def test_postpone():
+        test_postpone.__doc__ = title
+        test_postpone.output = message
+
+    g["test_postpone"] = test_postpone
