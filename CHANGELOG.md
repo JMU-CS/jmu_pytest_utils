@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - TBD
 
+
+## [1.2.1] - 2025-09-07
+
+### Added
+
+- meta.py module about submission metadata
+- `submission_closed()` function in meta.py
+- `__all__` in coverage.py (for convenience)
+
+### Changed
+
+- renamed `within_deadline()` to `submission_open()`
+- moved `get_username()`, `submission_open()`, and `postpone_tests()` to meta.py
+
+
 ## [1.2.0] - 2025-09-06
 
 ### Added
@@ -56,7 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release; see [v1.0 HISTORY.md](https://github.com/JMU-CS/jmu_pytest_utils/blob/v1.0/HISTORY.md)
 
 
-[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.0...v1.1.0
 [1.0]: https://github.com/JMU-CS/jmu_pytest_utils/releases/tag/v1.0
