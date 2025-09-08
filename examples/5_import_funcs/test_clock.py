@@ -1,6 +1,6 @@
 from jmu_pytest_utils.common import assert_pep8, assert_docs
-from jmu_pytest_utils.common import submission_open, postpone_tests
 from jmu_pytest_utils.decorators import weight
+from jmu_pytest_utils.meta import submission_open, postpone_tests
 
 from clock import time_str, add_time
 
