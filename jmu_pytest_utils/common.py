@@ -135,11 +135,13 @@ def run_module(filename, input=None):
     return run_command(["python", filename], input)
 
 
-def within_deadline(before=5, after=5):
+def submission_open(before=5, after=5):
     """Check if the current time is within the user's submission window.
 
-    The window is extended `before` minutes prior to the release date
-    and `after` minutes beyond the due date (or late due date, if set).
+    The window starts at the release date and ends at the due date (or late
+    due date, if set). This function applies a tolerance by including times:
+      * `before` minutes prior to the release date
+      * `after` minutes beyond the due/late date
 
     Args:
         before (int): Minutes to extend the window before the release date.
@@ -156,7 +158,7 @@ def within_deadline(before=5, after=5):
     except FileNotFoundError:
         return False
 
-    # Get the user's assignment dates
+    # Get the assignment's dates specific to the user
     assignment = metadata["users"][0]["assignment"]
     beg = datetime.fromisoformat(assignment["release_date"])
     end = datetime.fromisoformat(assignment["due_date"])
@@ -171,6 +173,14 @@ def within_deadline(before=5, after=5):
     # Compare with current time
     now = datetime.now(timezone.utc)
     return beg <= now <= end
+
+
+def submission_closed():
+    """Check if the current time is outside the user's submission window.
+
+    See submission_open() for more details. This function returns the opposite.
+    """
+    return not submission_open()
 
 
 def postpone_tests(
