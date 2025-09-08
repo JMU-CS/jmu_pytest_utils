@@ -1,5 +1,11 @@
 """Run test coverage and analyze the results."""
 
+__all__ = [
+    "assert_fail",
+    "assert_pass",
+    "assert_cover",
+]
+
 import importlib
 import json
 import os
@@ -31,7 +37,7 @@ def inject_random(main_filename):
             obj.__code__ = _return_random.__code__
 
 
-def process_results_json(function, status, penalty):
+def _process_results_json(function, status, penalty):
     """Verify correctness in the results.json file.
 
     Args:
@@ -85,7 +91,7 @@ def assert_fail(function, main_filename, test_filename, penalty=1):
         "--jmu=" + main_filename,
         test_filename
     ])
-    process_results_json(function, "fail", penalty)
+    _process_results_json(function, "fail", penalty)
 
 
 def assert_pass(function, main_filename, test_filename, penalty=1):
@@ -102,7 +108,7 @@ def assert_pass(function, main_filename, test_filename, penalty=1):
         "--jmu=assert_pass",
         test_filename
     ])
-    process_results_json(function, "pass", penalty)
+    _process_results_json(function, "pass", penalty)
 
 
 def assert_cover(function, main_filename, test_filename, branches=False,
