@@ -5,10 +5,13 @@ https://saligrama.io/blog/gradescope-autograder-security/
 """
 
 __all__ = [
+    "assert_no_if",
+    "assert_no_for",
+    "assert_no_while",
+    "assert_no_loops",
     "count_calls",
     "count_comments",
     "count_nodes",
-    "count_while_loops",
     "count_regex_matches",
     "get_source_code",
 ]
@@ -72,6 +75,71 @@ FUNCTIONS = [
 ]
 
 
+def assert_no_if(filename, main=True):
+    """Check that no if statements/expressions are used.
+
+    Args:
+        filename (str): The source file to parse.
+        main (bool): Don't count if __name__ == "__main__".
+    """
+    count = 0
+    if main:
+        source = get_source_code(filename)
+        tree = ast.parse(source, filename)
+        # Iterate top-level statements only
+        for node in tree.body:
+            if (
+                isinstance(node, ast.If)
+                and isinstance(node.test, ast.Compare)
+                and isinstance(node.test.left, ast.Name)
+                and node.test.left.id == "__name__"
+                and len(node.test.ops) == 1
+                and isinstance(node.test.ops[0], ast.Eq)
+                and isinstance(node.test.comparators[0], ast.Constant)
+                and node.test.comparators[0].value == "__main__"
+            ):
+                count += 1
+    node_count = count_nodes(filename)
+    assert node_count["If"] == count, "If statements are not allowed"
+    assert node_count["IfExp"] == 0, "If expressions are not allowed"
+
+
+def assert_no_for(filename, comps=True):
+    """Check that no for loops are used.
+
+    Args:
+        filename (str): The source file to parse.
+        comps (bool): Also check for comprehensions and generator expressions.
+    """
+    node_count = count_nodes(filename)
+    assert node_count["For"] == 0, "For loops are not allowed"
+    if comps:
+        assert node_count["ListComp"] == 0, "List comprehensions are not allowed"
+        assert node_count["SetComp"] == 0, "Set comprehensions are not allowed"
+        assert node_count["DictComp"] == 0, "Dict comprehensions are not allowed"
+        assert node_count["GeneratorExp"] == 0, "Generator expressions are not allowed"
+
+
+def assert_no_while(filename):
+    """Check that no while loops are used.
+
+    Args:
+        filename (str): The source file to parse.
+    """
+    node_count = count_nodes(filename)
+    assert node_count["While"] == 0, "While loops are not allowed"
+
+
+def assert_no_loops(filename):
+    """Calls assert_no_for() and assert_no_while().
+
+    Args:
+        filename (str): The source file to parse.
+    """
+    assert_no_for(filename)
+    assert_no_while(filename)
+
+
 def count_calls(filename, func_id):
     """Count how many times a function is called.
 
@@ -98,6 +166,9 @@ def count_calls(filename, func_id):
 
 def count_comments(filename):
     """Count the number of # comments in a program.
+
+    Args:
+        filename (str): The source file to parse.
 
     Returns:
         int: Number of end-of-line comments found.
@@ -131,19 +202,6 @@ def count_nodes(filename):
     source = get_source_code(filename)
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
-
-
-def count_while_loops(filename):
-    """Count the number of while loops in a program.
-
-    Args:
-        filename (str): The source file to parse.
-
-    Returns:
-        int: Number of while loops found.
-    """
-    nodes = count_nodes(filename)
-    return nodes['While']
 
 
 def count_regex_matches(filename, pattern, strip_comments=True):

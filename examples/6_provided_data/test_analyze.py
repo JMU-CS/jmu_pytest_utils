@@ -1,4 +1,4 @@
-from jmu_pytest_utils.audit import count_comments, count_regex_matches, count_while_loops
+from jmu_pytest_utils.audit import assert_no_while, count_comments, count_regex_matches
 from jmu_pytest_utils.common import assert_pep8, assert_docs, chdir_test
 from jmu_pytest_utils.decorators import weight
 import os
@@ -21,8 +21,8 @@ def test_pep8_docs():
 
 @weight(2)
 def test_approach():
+    assert_no_while(FILENAME)
     assert count_comments(FILENAME) > 2
-    assert count_while_loops(FILENAME) == 0
     assert count_regex_matches(FILENAME, r"\bwith\b") == 2
 
 

@@ -8,9 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `assert_no_if` function in audit.py
+- `assert_no_for` function in audit.py
+- `assert_no_while` function in audit.py
+- `assert_no_loops` function in audit.py
+
 ### Changed
 
 - always set status to "failed" on error
+
+### Removed
+
+- `count_while_loops()` function in audit.py
 
 
 ## [1.2.1] - 2025-09-07
