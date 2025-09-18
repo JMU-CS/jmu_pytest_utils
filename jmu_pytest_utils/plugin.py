@@ -124,12 +124,14 @@ def pytest_sessionfinish(session, exitstatus):
                 for line in r.longreprtext.splitlines():
                     if line.startswith("E       "):
                         output += "\n" + line[8:]
+                test["status"] = "failed"
             elif r.skipped:
                 # Append the reason for skipping the test
                 output += r.longrepr[-1]
             else:
                 # Append full message from pytest.fail()
                 output += r.longreprtext
+                test["status"] = "failed"
         output = output.strip()
         if output:
             test["output"] = output
