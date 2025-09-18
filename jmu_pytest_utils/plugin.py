@@ -119,16 +119,16 @@ def pytest_sessionfinish(session, exitstatus):
         # Initial output can be set during the test
         output = getattr(item.function, "output", "")
         for r in reports:
-            if "E       " in r.longreprtext:
+            if r.skipped:
+                # Append the reason for skipping the test
+                output += r.longrepr[-1]
+            elif "E       " in r.longreprtext:
                 # Extract output lines that start with "E"
                 for line in r.longreprtext.splitlines():
                     if line.startswith("E       "):
                         output += "\n" + line[8:]
                 test["status"] = "failed"
-            elif r.skipped:
-                # Append the reason for skipping the test
-                output += r.longrepr[-1]
-            else:
+            elif r.longreprtext:
                 # Append full message from pytest.fail()
                 output += r.longreprtext
                 test["status"] = "failed"
