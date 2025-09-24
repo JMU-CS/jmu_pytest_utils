@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- TBD
+- add `jmu_pytest_utils.fixtures.observable_stdin`: without something like this, assignments that wish to test the students' messages prompting the user to provide input would have to specify that they must not use the `input()` function's `prompt` parameter because [when run with output redirection (as in testing with `capsys`)), rather than connected to a tty, the input prompts go to stderr](discuss.python.org/t/builtin-function-input-writes-its-prompt-to-sys-stderr-and-not-to-sys-stdout/12955).
 
 
 ## [1.3.0] - 2025-09-17
