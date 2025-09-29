@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- TBD
+### Fixed
+
+- shorten output for complex errors
 
 
 ## [1.3.0] - 2025-09-17
