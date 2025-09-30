@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - shorten output for complex errors
+- separate install for venv and jq
 
 
 ## [1.3.0] - 2025-09-17

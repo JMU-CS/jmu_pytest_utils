@@ -7,7 +7,8 @@ source config.sh
 # Install Python
 add-apt-repository -y ppa:deadsnakes/ppa
 apt-get update
-apt-get install -y python${INSTALL_PYTHON_V}-venv jq
+apt-get install -y python${INSTALL_PYTHON_V}-venv
+apt-get install -y jq
 
 # Virtual environment
 python${INSTALL_PYTHON_V} -m venv .venv
