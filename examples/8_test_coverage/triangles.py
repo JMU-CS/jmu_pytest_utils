@@ -19,7 +19,7 @@ def valid(tri):
     # if not exactly three sides
     if len(tri) != 3:
         return False
-    a, b, c, = sorted(tri)
+    a, b, c = sorted(tri)
     # if any side is not positive
     if a <= 0:
         return False
@@ -33,19 +33,19 @@ def area(tri):
     Args:
         tri (tuple): length of the three sides
 
+    Raises:
+        ValueError: if the triangle is invalid
+
     Returns:
         float: area of the triangle
-
-    Raises:
-        ValueError: If the triangle is invalid.
     """
     if not valid(tri):
         raise ValueError("invalid triangle")
     # calculate half the perimeter
-    a, b, c, = tri
+    a, b, c = tri
     s = 0.5 * (a + b + c)
     # calculate the triangle area
-    return math.sqrt(s * (s-a) * (s-b) * (s-c))
+    return math.sqrt(s * (s - a) * (s - b) * (s - c))
 
 
 def classify(tri):
@@ -54,11 +54,11 @@ def classify(tri):
     Args:
         tri (tuple): length of the three sides
 
+    Raises:
+        ValueError: if the triangle is invalid
+
     Returns:
         str: "Equilateral", "Isosceles", or "Scalene"
-
-    Raises:
-        ValueError: If the triangle is invalid.
     """
     if not valid(tri):
         raise ValueError("invalid triangle")
