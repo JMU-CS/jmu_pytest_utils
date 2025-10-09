@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `redirect_stdin` class in common.py (#10)
 - `assert_no_functional` function in audit.py
 - `assert_not_imported` function in audit.py
+- `count_asserts` function in audit.py
 - `remove_docstrings` function in audit.py
 
 ### Fixed

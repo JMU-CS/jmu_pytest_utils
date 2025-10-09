@@ -161,6 +161,39 @@ def assert_not_imported(filename, modules):
                 pytest.fail(f"Importing from {node.module} is not allowed")
 
 
+def count_asserts(filename, required=1):
+    """Verify that each test function has assert statements.
+
+    Args:
+        filename (str): The source file to parse.
+        required (int): Minimum number of asserts.
+    """
+
+    # Parse the module and find all test functions
+    source = get_source_code(filename)
+    tree = ast.parse(source, filename)
+    test_functions = [
+        node for node in tree.body
+        if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")
+    ]
+
+    # Count assert statements and build error messages
+    errors = []
+    for func in test_functions:
+        count = sum(1 for node in ast.walk(func) if isinstance(node, ast.Assert))
+        if count < required:
+            if count == 0:
+                errors.append(f"{func.name} has no assert statements")
+            elif count == 1:
+                errors.append(f"{func.name} has only 1 assert statement")
+            else:
+                errors.append(f"{func.name} has only {count} assert statements")
+
+    # Fail the current test if applicable
+    if errors:
+        pytest.fail(", ".join(errors))
+
+
 def count_calls(filename, func_id):
     """Count how many times a function is called.
 
