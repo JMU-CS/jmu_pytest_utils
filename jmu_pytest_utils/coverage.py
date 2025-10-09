@@ -1,11 +1,5 @@
 """Run test coverage and analyze the results."""
 
-__all__ = [
-    "assert_fail",
-    "assert_pass",
-    "assert_cover",
-]
-
 import importlib
 import json
 import os

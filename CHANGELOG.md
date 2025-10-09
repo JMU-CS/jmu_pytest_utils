@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - remove_comments.py -- now in audit.py
+- `__all__` in audit.py and coverage.py
 
 
 ## [1.3.0] - 2025-09-17

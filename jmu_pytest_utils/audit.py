@@ -4,18 +4,6 @@ https://docs.python.org/3/library/ast.html#node-classes
 https://saligrama.io/blog/gradescope-autograder-security/
 """
 
-__all__ = [
-    "assert_no_if",
-    "assert_no_for",
-    "assert_no_while",
-    "assert_no_loops",
-    "count_calls",
-    "count_comments",
-    "count_nodes",
-    "count_regex_matches",
-    "get_source_code",
-]
-
 import ast
 import re
 import sys
