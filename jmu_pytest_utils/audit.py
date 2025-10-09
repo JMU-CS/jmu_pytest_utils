@@ -5,6 +5,7 @@ https://saligrama.io/blog/gradescope-autograder-security/
 """
 
 import ast
+import pytest
 import re
 import sys
 import tokenize
@@ -101,10 +102,7 @@ def assert_no_for(filename, comps=True):
     node_count = count_nodes(filename)
     assert node_count["For"] == 0, "For loops are not allowed"
     if comps:
-        assert node_count["ListComp"] == 0, "List comprehensions are not allowed"
-        assert node_count["SetComp"] == 0, "Set comprehensions are not allowed"
-        assert node_count["DictComp"] == 0, "Dict comprehensions are not allowed"
-        assert node_count["GeneratorExp"] == 0, "Generator expressions are not allowed"
+        assert_no_functional(filename)
 
 
 def assert_no_while(filename):
@@ -125,6 +123,42 @@ def assert_no_loops(filename):
     """
     assert_no_for(filename)
     assert_no_while(filename)
+
+
+def assert_no_functional(filename):
+    """Check that functional programming features are NOT used.
+
+    This includes list/set/dict comprehensions, generator expressions, and
+    lambda expressions.
+
+    Args:
+        filename (str): The source file to parse.
+    """
+    node_count = count_nodes(filename)
+    assert node_count["ListComp"] == 0, "List comprehensions are not allowed"
+    assert node_count["SetComp"] == 0, "Set comprehensions are not allowed"
+    assert node_count["DictComp"] == 0, "Dict comprehensions are not allowed"
+    assert node_count["GeneratorExp"] == 0, "Generator expressions are not allowed"
+    assert node_count["Lambda"] == 0, "Lambda expressions are not allowed"
+
+
+def assert_not_imported(filename, modules):
+    """Check that forbidden modules are not imported.
+
+    Args:
+        filename (str): The source file to parse.
+        modules (list): Names of modules that are not allowed to be imported.
+    """
+    source = get_source_code(filename)
+    tree = ast.parse(source, filename)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name in modules:
+                    pytest.fail(f"Importing {alias.name} is not allowed")
+        if isinstance(node, ast.ImportFrom):
+            if node.module in modules:
+                pytest.fail(f"Importing from {node.module} is not allowed")
 
 
 def count_calls(filename, func_id):
