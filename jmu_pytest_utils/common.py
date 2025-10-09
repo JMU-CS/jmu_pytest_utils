@@ -132,4 +132,4 @@ class redirect_stdin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdin = self._old_stdin
         if exc_type is EOFError:
-            pytest.fail("EOFError: called input() too many times")
+            pytest.fail("EOFError: input() was called too many times")

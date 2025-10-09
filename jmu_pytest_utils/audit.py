@@ -20,10 +20,9 @@ import ast
 import re
 import sys
 import tokenize
-from collections import Counter
 
+from collections import Counter
 from jmu_pytest_utils.common import chdir_test
-from jmu_pytest_utils.remove_comments import remove_comments
 
 # The following modules and functions are not allowed in student code,
 # because they can make the autograder vulnerable to various attacks.
@@ -217,7 +216,10 @@ def count_regex_matches(filename, pattern, strip_comments=True):
     """
     source = get_source_code(filename)
     if strip_comments:
-        source = remove_comments(source)
+        # Parse and unparse the source code
+        tree = ast.parse(source, filename)
+        tree = remove_docstrings(tree)
+        source = ast.unparse(tree)
     return len(re.findall(pattern, source))
 
 
@@ -233,6 +235,27 @@ def get_source_code(filename):
     chdir_test()
     with open(filename, encoding="utf-8") as file:
         return file.read()
+
+
+def remove_docstrings(node):
+    """Remove all docstrings from the given AST node.
+
+    Args:
+        node (AST): The root of the AST to process.
+
+    Returns:
+        AST: Same node with all docstrings removed.
+    """
+    places = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)
+    for child in ast.walk(node):
+        if isinstance(child, places):
+            if (child.body
+                and isinstance(child.body[0], ast.Expr)
+                and isinstance(child.body[0].value, ast.Constant)
+                and isinstance(child.body[0].value.value, str)
+            ):
+                child.body.pop(0)
+    return node
 
 
 def main(paths):
