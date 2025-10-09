@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `redirect_stdin` class in common.py (#10)
+
 ### Fixed
 
 - shorten output for complex errors

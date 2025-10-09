@@ -1,9 +1,11 @@
 """Common test functions used in many autograders."""
 
 import inspect
+import io
 import os
 import pytest
 import subprocess
+import sys
 
 
 def chdir_test():
@@ -114,3 +116,20 @@ def run_module(filename, input=None):
         str: Captured output from the child process.
     """
     return run_command(["python", filename], input)
+
+
+class redirect_stdin:
+    """Context manager that temporarily redirects standard input."""
+
+    def __init__(self, user_input):
+        self._old_stdin = None
+        self.user_input = user_input
+
+    def __enter__(self):
+        self._old_stdin = sys.stdin
+        sys.stdin = io.StringIO(self.user_input)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdin = self._old_stdin
+        if exc_type is EOFError:
+            pytest.fail("EOFError: called input() too many times")
