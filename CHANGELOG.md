@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `assert_not_imported` can also take a string
 - `redirect_stdin` also wraps `builtins.input`
+- run postsetup.sh at the end of setup.sh (#11)
 
 
 ## [1.4.0] - 2025-10-09

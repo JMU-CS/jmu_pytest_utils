@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# set autograder environment variables
+# Set autograder environment variables
 cd /autograder/source
 source config.sh
 
@@ -19,4 +19,9 @@ pip install --upgrade pip
 pip install git+https://github.com/JMU-CS/jmu_pytest_utils.git@v1.4.0
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
+fi
+
+# Additional steps
+if [[ -f postsetup.sh ]]; then
+    source postsetup.sh
 fi
