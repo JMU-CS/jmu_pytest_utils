@@ -27,7 +27,7 @@ def init_cfg():
     global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE, INSTALL_PYTHON_V
 
     SUBMISSION_FILES = []
-    AUTOGRADER_TESTS = []
+    AUTOGRADER_TESTS = [] if len(sys.argv) == 2 else [sys.argv[2]]
     ADDITIONAL_FILES = []
     REQUIREMENTS_TXT = []
     SUBMISSION_LIMIT = os.getenv("SUBMISSION_LIMIT", -1)
@@ -101,11 +101,13 @@ def make_cfg():
                         test_files.append(file_path)
                     else:
                         main_files.append(file_path)
-                else:
+                elif not (file.startswith("autograder") and file.endswith(".zip")):
                     data_files.append(file_path)
 
     # Update global variables if set by tests
     init_cfg()
+    if AUTOGRADER_TESTS:
+        test_files = AUTOGRADER_TESTS  # Command-line argument
     for filename in test_files:
         module_name = filename[:-3].replace(os.path.sep, ".")
         module = importlib.import_module(module_name)
@@ -281,7 +283,7 @@ def clean_cmd():
 
 
 USAGE = """
-Usage: jmu_pytest_utils <command>
+Usage: jmu_pytest_utils <command> [test_module.py]
 
 Possible commands:
 - build: Create zip file for Gradescope
@@ -300,9 +302,19 @@ been modified during "setup" or "debug" commands.
 
 
 def main():
-    """Parse and run the command-line argument."""
+    """Parse and run the command-line argument(s)."""
+    global ZIP_FILENAME
+    command = None
+    if len(sys.argv) == 2:
+        command = sys.argv[1]
+    elif len(sys.argv) == 3:
+        # Validate the test module filename
+        testmod = sys.argv[2]
+        if testmod.endswith(".py") and os.path.exists(testmod):
+            command = sys.argv[1]
+            zipname = testmod[:-3].replace("test_", "").replace("_test", "")
+            ZIP_FILENAME = f"autograder_{zipname}.zip"
     sys.path.insert(0, os.getcwd())  # for importlib
-    command = sys.argv[1] if len(sys.argv) == 2 else None
     match command:
         case "build":
             build_cmd()

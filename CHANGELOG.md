@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- optional test file argument for builder.py (#12)
+
 ### Changed
 
 - `assert_not_imported` can also take a string
