@@ -6,7 +6,10 @@ https://gradescope-autograders.readthedocs.io/en/latest/specs/
 
 import json
 import os
-from jmu_pytest_utils.coverage import inject_random
+import pytest
+
+from jmu_pytest_utils.coverage import inject_random, TestFunction
+from typing import Any
 
 # Initial results.json created in limit.py via run_autograder
 RESULTS = None
@@ -15,7 +18,7 @@ RESULTS = None
 REPORTS = {}
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: pytest.Parser) -> None:
     """Register a command line option."""
     parser.addoption(
         "--jmu",
@@ -23,7 +26,7 @@ def pytest_addoption(parser):
     )
 
 
-def pytest_sessionstart(session):
+def pytest_sessionstart(session: pytest.Session) -> None:
     """Read the initial results.json data."""
     global RESULTS
 
@@ -43,7 +46,11 @@ def pytest_sessionstart(session):
             RESULTS["tests"] = []
 
 
-def pytest_exception_interact(node, call, report):
+def pytest_exception_interact(
+    node: pytest.Item | pytest.Collector,
+    call: pytest.CallInfo[Any],
+    report: pytest.CollectReport | pytest.TestReport
+) -> None:
     """Report errors during collection."""
 
     # Abort if not in run_autograder
@@ -59,7 +66,7 @@ def pytest_exception_interact(node, call, report):
         })
 
 
-def pytest_runtest_logreport(report):
+def pytest_runtest_logreport(report: pytest.TestReport) -> None:
     """Store a copy of each test report."""
 
     # Abort if not in run_autograder
@@ -74,7 +81,7 @@ def pytest_runtest_logreport(report):
         REPORTS[key] = [report]
 
 
-def pytest_sessionfinish(session, exitstatus):
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """Generate results.json at the end."""
 
     # Abort if not in run_autograder
@@ -85,18 +92,19 @@ def pytest_sessionfinish(session, exitstatus):
     total_score = 0
     tests = RESULTS["tests"]
     for item, reports in zip(session.items, REPORTS.values()):
+        test_function: TestFunction = item.function  # type: ignore
 
         # The name is the docstring or function name
         test = {
-            "name": item.name if RESULTS.get("jmu")
-            else item.function.__doc__ or item.name
+            "name": item.name if RESULTS.get("jmu")  # Running with --jmu
+            else test_function.__doc__ or item.name
         }
         tests.append(test)
 
         # max_score is set by the @weight() decorator
-        weight = getattr(item.function, "weight", 0)
+        weight = getattr(test_function, "weight", 0)
         # score can be set manually for partial credit
-        score = getattr(item.function, "score", 0)
+        score = getattr(test_function, "score", 0)
         if not score:
             # The default score is all or nothing
             if any(r.failed for r in reports):
@@ -110,14 +118,14 @@ def pytest_sessionfinish(session, exitstatus):
             test["max_score"] = weight
 
         # Get any leaderboard entries set during the test
-        leaderboard = getattr(item.function, "leaderboard", [])
+        leaderboard = getattr(test_function, "leaderboard", [])
         if leaderboard:
             if "leaderboard" not in RESULTS:
                 RESULTS["leaderboard"] = []
             RESULTS["leaderboard"].extend(leaderboard)
 
         # Initial output can be set during the test
-        output = getattr(item.function, "output", "")
+        output = getattr(test_function, "output", "")
         for r in reports:
             if r.skipped:
                 # Append the reason for skipping the test
@@ -139,7 +147,7 @@ def pytest_sessionfinish(session, exitstatus):
             test["output"] = output
 
         # If the test was required, stop here
-        required = getattr(item.function, "required", None)
+        required = getattr(test_function, "required", None)
         if required and any(r.failed for r in reports):
             output += "\n\nThis test must pass before other results are shown."
             test["output"] = output

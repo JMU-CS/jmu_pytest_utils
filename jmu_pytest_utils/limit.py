@@ -9,7 +9,7 @@ import pytz
 TZ = pytz.timezone(os.getenv("SCHOOL_TIME_ZONE", "US/Eastern"))
 
 
-def main():
+def main() -> None:
     """Called by run_autograder to enforce the submission limit."""
 
     try:

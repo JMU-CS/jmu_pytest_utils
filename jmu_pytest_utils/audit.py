@@ -63,12 +63,12 @@ FUNCTIONS = [
 ]
 
 
-def assert_no_if(filename, main=True):
+def assert_no_if(filename: str, main: bool = True) -> None:
     """Check that no if statements/expressions are used.
 
     Args:
-        filename (str): The source file to parse.
-        main (bool): Don't count if __name__ == "__main__".
+        filename: The source file to parse.
+        main: Don't count if __name__ == "__main__".
     """
     count = 0
     if main:
@@ -92,12 +92,12 @@ def assert_no_if(filename, main=True):
     assert node_count["IfExp"] == 0, "If expressions are not allowed"
 
 
-def assert_no_for(filename, comps=True):
+def assert_no_for(filename: str, comps: bool = True) -> None:
     """Check that no for loops are used.
 
     Args:
-        filename (str): The source file to parse.
-        comps (bool): Also check for comprehensions and generator expressions.
+        filename: The source file to parse.
+        comps: Also check for comprehensions and generator expressions.
     """
     node_count = count_nodes(filename)
     assert node_count["For"] == 0, "For loops are not allowed"
@@ -105,34 +105,34 @@ def assert_no_for(filename, comps=True):
         assert_no_functional(filename)
 
 
-def assert_no_while(filename):
+def assert_no_while(filename: str) -> None:
     """Check that no while loops are used.
 
     Args:
-        filename (str): The source file to parse.
+        filename: The source file to parse.
     """
     node_count = count_nodes(filename)
     assert node_count["While"] == 0, "While loops are not allowed"
 
 
-def assert_no_loops(filename):
+def assert_no_loops(filename: str) -> None:
     """Calls assert_no_for() and assert_no_while().
 
     Args:
-        filename (str): The source file to parse.
+        filename: The source file to parse.
     """
     assert_no_for(filename)
     assert_no_while(filename)
 
 
-def assert_no_functional(filename):
+def assert_no_functional(filename: str) -> None:
     """Check that functional programming features are NOT used.
 
     This includes list/set/dict comprehensions, generator expressions, and
     lambda expressions.
 
     Args:
-        filename (str): The source file to parse.
+        filename: The source file to parse.
     """
     node_count = count_nodes(filename)
     assert node_count["ListComp"] == 0, "List comprehensions are not allowed"
@@ -142,12 +142,12 @@ def assert_no_functional(filename):
     assert node_count["Lambda"] == 0, "Lambda expressions are not allowed"
 
 
-def assert_not_imported(filename, modules):
+def assert_not_imported(filename: str, modules: str | list[str]) -> None:
     """Check that forbidden modules are not imported.
 
     Args:
-        filename (str): The source file to parse.
-        modules (str or list): Name(s) of module(s) not allowed to be imported.
+        filename: The source file to parse.
+        modules: Name(s) of module(s) not allowed to be imported.
     """
     if isinstance(modules, str):
         modules = [modules]
@@ -163,12 +163,12 @@ def assert_not_imported(filename, modules):
                 pytest.fail(f"Importing from {node.module} is not allowed")
 
 
-def count_asserts(filename, required=1):
+def count_asserts(filename: str, required: int = 1) -> None:
     """Verify that each test function has assert statements.
 
     Args:
-        filename (str): The source file to parse.
-        required (int): Minimum number of asserts.
+        filename: The source file to parse.
+        required: Minimum number of asserts.
     """
 
     # Parse the module and find all test functions
@@ -196,15 +196,15 @@ def count_asserts(filename, required=1):
         pytest.fail(", ".join(errors))
 
 
-def count_calls(filename, func_id):
+def count_calls(filename: str, func_id: str) -> int:
     """Count how many times a function is called.
 
     Args:
-        filename (str): The source file to parse.
-        func_id (str): Function/method name (Ex: "print").
+        filename: The source file to parse.
+        func_id: Function/method name (Ex: "print").
 
     Returns:
-        int: Number of times the function is called.
+        Number of times the function is called.
     """
     source = get_source_code(filename)
     tree = ast.parse(source, filename)
@@ -220,14 +220,14 @@ def count_calls(filename, func_id):
     return count
 
 
-def count_comments(filename):
+def count_comments(filename: str) -> int:
     """Count the number of # comments in a program.
 
     Args:
-        filename (str): The source file to parse.
+        filename: The source file to parse.
 
     Returns:
-        int: Number of end-of-line comments found.
+        Number of end-of-line comments found.
     """
     count = 0
     chdir_test()
@@ -239,7 +239,7 @@ def count_comments(filename):
     return count
 
 
-def count_nodes(filename):
+def count_nodes(filename: str) -> Counter[str]:
     """Count the number of AST nodes in a program.
 
     Some nodes that autograders often check include "If", "IfExp",
@@ -250,26 +250,26 @@ def count_nodes(filename):
     list of node names.
 
     Args:
-        filename (str): The source file to parse.
+        filename: The source file to parse.
 
     Returns:
-        Counter: Maps AST node names to counts.
+        Maps AST node names to counts.
     """
     source = get_source_code(filename)
     tree = ast.parse(source, filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
 
 
-def count_regex_matches(filename, pattern, strip_comments=True):
+def count_regex_matches(filename: str, pattern: str, strip_comments: bool = True) -> int:
     """Count the number of regex pattern matches in code.
 
     Args:
-        filename (str): The source file to parse.
-        pattern (str): Regular expression pattern to match.
-        strip_comments (bool): Whether to remove comments before matching.
+        filename: The source file to parse.
+        pattern: Regular expression pattern to match.
+        strip_comments: Whether to remove comments before matching.
 
     Returns:
-        int: Number of matches found.
+        Number of matches found.
     """
     source = get_source_code(filename)
     if strip_comments:
@@ -280,28 +280,28 @@ def count_regex_matches(filename, pattern, strip_comments=True):
     return len(re.findall(pattern, source))
 
 
-def get_source_code(filename):
+def get_source_code(filename: str) -> str:
     """Read the contents of a source file.
 
     Args:
-        filename (str): The source file to read.
+        filename: The source file to read.
 
     Returns:
-        str: Contents of the source file.
+        Contents of the source file.
     """
     chdir_test()
     with open(filename, encoding="utf-8") as file:
         return file.read()
 
 
-def remove_docstrings(node):
+def remove_docstrings(node: ast.AST) -> ast.AST:
     """Remove all docstrings from the given AST node.
 
     Args:
-        node (AST): The root of the AST to process.
+        node: The root of the AST to process.
 
     Returns:
-        AST: Same node with all docstrings removed.
+        Same node with all docstrings removed.
     """
     places = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)
     for child in ast.walk(node):
@@ -315,14 +315,14 @@ def remove_docstrings(node):
     return node
 
 
-def main(paths):
+def main(paths: list[str]) -> None:
     """Called by run_autograder to check for forbidden code.
 
     Args:
-        paths (list): Names of Python source files.
+        paths: Names of Python source files.
     """
     def error(message):
-        print(f"{path}:{node.lineno}:{node.col_offset+1} {message}")
+        print(f"{path}:{node.lineno}:{node.col_offset+1} {message}")  # type: ignore
     # parse each source file
     for path in paths:
         if not path.endswith(".py"):

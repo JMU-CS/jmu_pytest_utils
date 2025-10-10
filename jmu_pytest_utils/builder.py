@@ -21,7 +21,7 @@ CACHE_DIRS = ["__pycache__", ".pytest_cache", ".ruff_cache"]
 ZIP_FILENAME = f"autograder_{os.path.basename(os.getcwd())}.zip"
 
 
-def init_cfg():
+def init_cfg() -> None:
     """Initialize global variables with default values."""
     global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES, REQUIREMENTS_TXT
     global SUBMISSION_LIMIT, FUNCTION_TIMEOUT, SCHOOL_TIME_ZONE, INSTALL_PYTHON_V
@@ -36,12 +36,12 @@ def init_cfg():
     INSTALL_PYTHON_V = os.getenv("INSTALL_PYTHON_V", 3.12)
 
 
-def copy_file(filename, overwrite=False):
+def copy_file(filename: str, overwrite: bool = False) -> None:
     """Copy a template file if not already exists.
 
     Args:
-        filename (str): Name of the file to copy.
-        overwrite (bool): Replace file if exists.
+        filename: Name of the file to copy.
+        overwrite: Replace file if exists.
     """
     if overwrite or not os.path.exists(filename):
         print("Copying", filename)
@@ -49,19 +49,19 @@ def copy_file(filename, overwrite=False):
         shutil.copy(src, ".")
 
 
-def delete_file(filename, message):
+def delete_file(filename: str, message: str) -> None:
     """Delete a file if the file exists.
 
     Args:
-        filename (str): Path of the file to delete.
-        message (str): Additional details to display.
+        filename: Path of the file to delete.
+        message: Additional details to display.
     """
     if os.path.exists(filename):
         print("Deleting", message, filename)
         os.remove(filename)
 
 
-def load_cfg():
+def load_cfg() -> None:
     """Initialize global variables from config.sh file."""
 
     # Update global variables if set by config.sh
@@ -78,7 +78,7 @@ def load_cfg():
                 globals()[name] = value
 
 
-def make_cfg():
+def make_cfg() -> None:
     """Generate config.sh file based on existing files."""
     global SUBMISSION_FILES, AUTOGRADER_TESTS, ADDITIONAL_FILES
 
@@ -153,11 +153,11 @@ def make_cfg():
         file.write(text)
 
 
-def build_cmd(setup=False):
+def build_cmd(setup: bool = False) -> None:
     """Read config.sh and copy other template files.
 
     Args:
-        setup (bool): Whether to copy the CONFIG_FILES.
+        setup: Whether to copy the CONFIG_FILES.
     """
 
     # Generate if needed and load configuration
@@ -205,7 +205,7 @@ def build_cmd(setup=False):
         copy_file(filename)
 
 
-def debug_cmd():
+def debug_cmd() -> None:
     """Run the autograder and display the results."""
 
     print("Running autograder")
@@ -218,7 +218,7 @@ def debug_cmd():
         os.system("start results.json")
 
 
-def make_zip():
+def make_zip() -> None:
     """Create the autograder zip file for Gradescope."""
 
     # Files to include in the zip archive
@@ -234,21 +234,21 @@ def make_zip():
                 zf.write(file_path, file_path)
 
 
-def files_match(path1, path2):
+def files_match(path1: str, path2: str) -> bool:
     """Check if two files have the same contents.
 
     Args:
-        path1 (str): Path to 1st file (Ex: modified).
-        path2 (str): Path to 2nd file (Ex: template).
+        path1: Path to 1st file (Ex: modified).
+        path2: Path to 2nd file (Ex: template).
 
     Returns:
-        bool: True if the files have the same contents.
+        True if the files have the same contents.
     """
     with open(path1) as file1, open(path2) as file2:
         return file1.read() == file2.read()
 
 
-def clean_cmd():
+def clean_cmd() -> None:
     """Run the clean command to remove build files."""
 
     # Delete config if same as auto generated
@@ -301,7 +301,7 @@ been modified during "setup" or "debug" commands.
 """
 
 
-def main():
+def main() -> None:
     """Parse and run the command-line argument(s)."""
     global ZIP_FILENAME
     command = None

@@ -1,30 +1,35 @@
 """Decorators for test functions."""
 
+from collections.abc import Callable
+from typing import Any, TypeVar
 
-def required():
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def required() -> Callable[[F], F]:
     """Decorator for requiring a test to pass.
 
     If a required test fails, the remaining tests are hidden.
 
     Returns:
-        function: The original function with attribute set.
+        The original function with attribute set.
     """
-    def wrapper(f):
+    def wrapper(f: F) -> F:
         f.required = True
         return f
     return wrapper
 
 
-def weight(value):
+def weight(value: int) -> Callable[[F], F]:
     """Decorator for setting a test's max_score.
 
     Args:
-        value (int): The number of points the test is worth.
+        value: The number of points the test is worth.
 
     Returns:
-        function: The original function with attribute set.
+        The original function with attribute set.
     """
-    def wrapper(f):
+    def wrapper(f: F) -> F:
         f.weight = value
         return f
     return wrapper

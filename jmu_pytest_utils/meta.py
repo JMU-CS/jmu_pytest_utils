@@ -5,14 +5,14 @@ import inspect
 import json
 
 
-def get_username(default="username"):
+def get_username(default: str = "username") -> str:
     """Get the student's username from the submission metadata.
 
     Args:
-        default (str): Value to return if metadata not found.
+        default: Value to return if metadata not found.
 
     Returns:
-        str: The student's email address up to the @ symbol.
+        The student's email address up to the @ symbol.
     """
     try:
         with open("/autograder/submission_metadata.json") as file:
@@ -22,7 +22,7 @@ def get_username(default="username"):
         return default
 
 
-def submission_open(before=5, after=5):
+def submission_open(before: int = 5, after: int = 5) -> bool:
     """Check if the current time is within the user's submission window.
 
     The window starts at the release date and ends at the due date (or late
@@ -31,11 +31,11 @@ def submission_open(before=5, after=5):
       * `after` minutes beyond the due/late date
 
     Args:
-        before (int): Minutes to extend the window before the release date.
-        after (int): Minutes to extend the window after the due/late date.
+        before: Minutes to extend the window before the release date.
+        after: Minutes to extend the window after the due/late date.
 
     Returns:
-        bool: True if the current time is within the submission window.
+        True if the current time is within the submission window.
     """
 
     # Get the submission metadata
@@ -62,18 +62,19 @@ def submission_open(before=5, after=5):
     return beg <= now <= end
 
 
-def submission_closed():
+def submission_closed() -> bool:
     """Check if the current time is outside the user's submission window.
 
-    See submission_open() for more details. This function returns the opposite.
+    Returns:
+	The opposite of submission_open() with default arguments.
     """
     return not submission_open()
 
 
 def postpone_tests(
-    title="Ready to grade",
-    message="Your submission has been received and will be graded manually.",
-):
+    title: str = "Ready to grade",
+    message: str = "Your submission has been received and will be graded manually.",
+) -> None:
     """Replace all tests in the calling test module with a single placeholder.
 
     This function is used to hide autograder feedback during an assignment or
@@ -81,8 +82,8 @@ def postpone_tests(
     named `test_postpone` that carries the given title and message.
 
     Args:
-        title (str): Docstring for the new test (rendered as the test's name).
-        message (str): Message assigned to the new test's `output` attribute.
+        title: Docstring for the new test (rendered as the test's name).
+        message: Message assigned to the new test's `output` attribute.
     """
 
     # Get the test module

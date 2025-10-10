@@ -9,7 +9,10 @@ import sys
 import textwrap
 import types
 
+from collections.abc import Callable
 from jmu_pytest_utils.common import run_command
+
+TestFunction = Callable[..., None]
 
 
 def _return_random(*args, **kwargs):
@@ -17,11 +20,11 @@ def _return_random(*args, **kwargs):
     return random.random()
 
 
-def inject_random(main_filename):
+def inject_random(main_filename: str) -> None:
     """Replace all functions in the given module with return_random.
 
     Args:
-        main_filename (str): Name of the main file to test.
+        main_filename: Name of the main file to test.
     """
     sys.path.insert(0, os.getcwd())  # for importlib
     module_name = main_filename[:-3].replace(os.path.sep, ".")
@@ -31,13 +34,13 @@ def inject_random(main_filename):
             obj.__code__ = _return_random.__code__
 
 
-def _process_results_json(function, status, penalty):
+def _process_results_json(function: TestFunction, status: str, penalty: float) -> None:
     """Verify correctness in the results.json file.
 
     Args:
-        function (function): Test function for score/weight.
-        status (str): Check for "fail" or "pass" in status.
-        penalty (float): Points per incorrect test function.
+        function: Test function for score/weight.
+        status: Check for "fail" or "pass" in status.
+        penalty: Points per incorrect test function.
     """
     if not os.path.exists("results.json"):
         pytest.fail("pytest failed to generate test results", False)
@@ -68,17 +71,18 @@ def _process_results_json(function, status, penalty):
         pytest.fail(output)
 
 
-def assert_fail(function, main_filename, test_filename, penalty=1):
+def assert_fail(function: TestFunction, main_filename: str, test_filename: str,
+                penalty: float = 1) -> None:
     """Run pytest and assert that all tests fail.
 
     Note: The --jmu option of the jmu_pytest_utils plugin
     patches all functions in main_filename to return random.
 
     Args:
-        function (function): Test function for score/weight.
-        main_filename (str): Name of the main file to test.
-        test_filename (str): Name of the test file to run.
-        penalty (float): Points per incorrect test function.
+        function: Test function for score/weight.
+        main_filename: Name of the main file to test.
+        test_filename: Name of the test file to run.
+        penalty: Points per incorrect test function.
     """
     run_command([
         "pytest",
@@ -88,14 +92,15 @@ def assert_fail(function, main_filename, test_filename, penalty=1):
     _process_results_json(function, "fail", penalty)
 
 
-def assert_pass(function, main_filename, test_filename, penalty=1):
+def assert_pass(function: TestFunction, main_filename: str, test_filename: str,
+                penalty: float = 1) -> None:
     """Run pytest and assert that all tests pass.
 
     Args:
-        function (function): Test function for score/weight.
-        main_filename (str): Name of the main file to test.
-        test_filename (str): Name of the test file to run.
-        penalty (float): Points per incorrect test function.
+        function: Test function for score/weight.
+        main_filename: Name of the main file to test.
+        test_filename: Name of the test file to run.
+        penalty: Points per incorrect test function.
     """
     run_command([
         "pytest",
@@ -105,17 +110,17 @@ def assert_pass(function, main_filename, test_filename, penalty=1):
     _process_results_json(function, "pass", penalty)
 
 
-def assert_cover(function, main_filename, test_filename, branches=False,
-                 line_penalty=1, branch_penalty=1):
+def assert_cover(function: TestFunction, main_filename: str, test_filename: str,
+                 branches: bool = False, line_penalty: float = 1, branch_penalty: float = 1) -> None:
     """Run pytest and analyze coverage results.
 
     Args:
-        function (function): Test function for score/weight.
-        main_filename (str): Name of the main file to test.
-        test_filename (str): Name of the test file to run.
-        branches (bool): Whether to report branch coverage.
-        line_penalty (float): Points per missed line.
-        branch_penalty (float): Points per missed branch.
+        function: Test function for score/weight.
+        main_filename: Name of the main file to test.
+        test_filename: Name of the test file to run.
+        branches: Whether to report branch coverage.
+        line_penalty: Points per missed line.
+        branch_penalty: Points per missed branch.
     """
     run_command([
         "pytest",
