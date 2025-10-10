@@ -22,26 +22,49 @@ During autograder setup, a configuration script named [`config.sh`](../jmu_pytes
 This script sets the environment variables used by [`run_autograder`](../jmu_pytest_utils/template/run_autograder) and other grading scripts.
 
 You can override the default values in `config.sh` by defining global variables with the same names.
-For example, to limit the number of submissions, you can add the following line to your test module (after the `import` statements):
+For example, you can add any of the following lines to your test module after the `import` statements:
 
-``` py
-SUBMISSION_LIMIT = 10
-```
+* Limit the number of submissions:
+    ``` py
+    SUBMISSION_LIMIT = 10
+    ```
+* Change pytest's --timeout value:
+    ``` py
+    FUNCTION_TIMEOUT = 10
+    ```
+* Specify packages to be installed:
+    ``` py
+    REQUIREMENTS_TXT = ["beautifulsoup4", "requests"]
+    ```
 
-Alternatively, you can define environment variables that apply to all assignments.
-For example, the default time zone is `US/Eastern`, but if your school is somewhere else, you can set this variable in your OS environment:
+Alternatively, you can define environment variables that apply to *all* assignments.
+For example, you can export these variables before running `jmu_pytest_utils build`:
 
-``` sh
-export SCHOOL_TIME_ZONE="US/Mountain"
-```
+* Change the submission time zone:
+    ``` sh
+    export SCHOOL_TIME_ZONE="US/Mountain"
+    ```
+* Install a specific python version:
+    ``` sh
+    export INSTALL_PYTHON_V="3.14"
+    ```
 
 The [`builder.py`](../jmu_pytest_utils/builder.py) script automatically detects assignment files using `os.walk()`.
 However, you can manually override the file requirements if needed.
-For example, to specify the files that students must submit, add a line like this to your test module:
+For example:
 
-``` py
-SUBMISSION_FILES = ["file1.py", "file2.py"]
-```
+* Files the student must submit:
+    ``` py
+    SUBMISSION_FILES = ["file1.py", "file2.py"]
+    ```
+* Reference tests for grading:
+    ``` py
+    AUTOGRADER_TESTS = ["test_file1.py", "test_file2.py"]
+    ```
+* Other files included in zip:
+    ``` py
+    ADDITIONAL_FILES = ["data/hello.txt", "data/world.txt"]
+    ```
 
 When looking at `config.sh`, note that Bash and Python represent a list of files differently.
 Bash uses a space-delimited string (Ex: `"file1.py file2.py"`), but Python uses a list of strings.
