@@ -1,5 +1,6 @@
 """Common test functions used in many autograders."""
 
+import builtins
 import inspect
 import io
 import os
@@ -118,18 +119,38 @@ def run_module(filename, input=None):
     return run_command(["python", filename], input)
 
 
+def _input(prompt=None):
+    if prompt:
+        # show prompt on stderr without adding a newline
+        sys.stderr.write(prompt)
+        sys.stderr.flush()
+    line = sys.stdin.readline()
+    if line == "":
+        # mirror input()'s behavior when stdin is exhausted
+        raise EOFError
+    return line[:-1] if line.endswith("\n") else line
+
+
 class redirect_stdin:
-    """Context manager that temporarily redirects standard input."""
+    """Context manager that temporarily redirects standard input.
+
+    While active, the built-in input() is replaced with a wrapper that writes
+    the prompt to stderr, so that prompts stay separate from the main output.
+    """
 
     def __init__(self, user_input):
+        self._old_input = None
         self._old_stdin = None
         self.user_input = user_input
 
     def __enter__(self):
+        self._old_input = builtins.input
         self._old_stdin = sys.stdin
+        builtins.input = _input
         sys.stdin = io.StringIO(self.user_input)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        builtins.input = self._old_input
         sys.stdin = self._old_stdin
         if exc_type is EOFError:
             pytest.fail("EOFError: input() was called too many times")

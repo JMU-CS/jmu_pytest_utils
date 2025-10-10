@@ -147,8 +147,10 @@ def assert_not_imported(filename, modules):
 
     Args:
         filename (str): The source file to parse.
-        modules (list): Names of modules that are not allowed to be imported.
+        modules (str or list): Name(s) of module(s) not allowed to be imported.
     """
+    if isinstance(modules, str):
+        modules = [modules]
     source = get_source_code(filename)
     tree = ast.parse(source, filename)
     for node in ast.walk(tree):
