@@ -12,28 +12,9 @@ The following "assignments" are used for testing `jmu_pytest_utils` and provided
 * [8_test_coverage](8_test_coverage) -- grading student's tests
 * [9_leaderboard](9_leaderboard) -- Gradescope leaderboard
 
-
 ## API Docs
 
-Please refer to the docstrings in the files below.
-
-Most tests will import the following two modules:
-
-* [`jmu_pytest_utils.common`](../jmu_pytest_utils/common.py)
-* [`jmu_pytest_utils.decorators`](../jmu_pytest_utils/decorators.py)
-
-Tests that analyze the student's *code* import:
-
-* [`jmu_pytest_utils.audit`](../jmu_pytest_utils/audit.py)
-
-Tests that analyze the student's *tests* import:
-
-* [`jmu_pytest_utils.coverage`](../jmu_pytest_utils/coverage.py)
-
-And of course, you might also import pytest:
-
-* [API Reference - pytest documentation](https://docs.pytest.org/en/stable/reference/reference.html)
-
+The [API documentation](https://jmu-cs.github.io/jmu_pytest_utils/) is automatically built with [pdoc](https://pdoc.dev/) whenever there are new commits on the main branch.
 
 ## Configuration
 

@@ -18,7 +18,7 @@ To build `autograder.zip`, run this command from an assignment's directory:
 
 ## Documentation
 
-See the [examples](examples) directory for documentation and test assignments.
+To get started, read the [examples](examples) directory and [API documentation](https://jmu-cs.github.io/jmu_pytest_utils/).
 
 See the [CHANGELOG](CHANGELOG.md) for release notes and recently added features.
 
