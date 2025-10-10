@@ -1,7 +1,8 @@
 """Generate the final results.json file for Gradescope.
 
-https://docs.pytest.org/en/stable/reference/reference.html
-https://gradescope-autograders.readthedocs.io/en/latest/specs/
+References:
+- https://docs.pytest.org/en/stable/reference/reference.html
+- https://gradescope-autograders.readthedocs.io/en/latest/specs/
 """
 
 import json

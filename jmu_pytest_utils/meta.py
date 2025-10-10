@@ -12,7 +12,7 @@ def get_username(default: str = "username") -> str:
         default: Value to return if metadata not found.
 
     Returns:
-        The student's email address up to the @ symbol.
+        The student's email address before the @ symbol.
     """
     try:
         with open("/autograder/submission_metadata.json") as file:
@@ -66,7 +66,7 @@ def submission_closed() -> bool:
     """Check if the current time is outside the user's submission window.
 
     Returns:
-	The opposite of submission_open() with default arguments.
+        The opposite of `submission_open()` with default arguments.
     """
     return not submission_open()
 

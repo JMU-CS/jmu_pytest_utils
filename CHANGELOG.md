@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - run postsetup.sh at the end of setup.sh (#11)
 - optional test file argument for builder.py (#12)
 - type hints for all API functions (#13)
+- API documentation website built with pdoc
 
 ### Changed
 

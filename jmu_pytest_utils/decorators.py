@@ -12,7 +12,7 @@ def required() -> Callable[[F], F]:
     If a required test fails, the remaining tests are hidden.
 
     Returns:
-        The original function with attribute set.
+        The original function with required attribute set.
     """
     def wrapper(f: F) -> F:
         f.required = True
@@ -27,7 +27,7 @@ def weight(value: int) -> Callable[[F], F]:
         value: The number of points the test is worth.
 
     Returns:
-        The original function with attribute set.
+        The original function with weight attribute set.
     """
     def wrapper(f: F) -> F:
         f.weight = value

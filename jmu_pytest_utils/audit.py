@@ -1,7 +1,8 @@
 """Static analysis of student code.
 
-https://docs.python.org/3/library/ast.html#node-classes
-https://saligrama.io/blog/gradescope-autograder-security/
+References:
+- https://docs.python.org/3/library/ast.html#node-classes
+- https://saligrama.io/blog/gradescope-autograder-security/
 """
 
 import ast

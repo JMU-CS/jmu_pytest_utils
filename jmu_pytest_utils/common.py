@@ -155,13 +155,13 @@ class redirect_stdin:
     def __init__(self, user_input: str) -> None:
         self._old_input = None
         self._old_stdin = None
-        self.user_input = user_input
+        self._user_input = user_input
 
     def __enter__(self):
         self._old_input = builtins.input
         self._old_stdin = sys.stdin
         builtins.input = _input
-        sys.stdin = io.StringIO(self.user_input)
+        sys.stdin = io.StringIO(self._user_input)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         builtins.input = self._old_input
