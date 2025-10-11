@@ -64,19 +64,19 @@ FUNCTIONS = [
 ]
 
 
-def assert_no_if(filename: str, main: bool = True) -> None:
+def assert_no_if(filename: str, main_okay: bool = True) -> None:
     """Check that no if statements/expressions are used.
 
     Args:
         filename: The source file to parse.
-        main: Don't count if __name__ == "__main__".
+        main_okay: Allow if __name__ == "__main__".
     """
     count = 0
-    if main:
-        source = get_source_code(filename)
-        tree = ast.parse(source, filename)
+    if main_okay:
         # Iterate top-level statements only
+        tree = get_source_tree(filename)
         for node in tree.body:
+            # Count each if __name__ == "__main__"
             if (
                 isinstance(node, ast.If)
                 and isinstance(node.test, ast.Compare)
@@ -152,8 +152,7 @@ def assert_not_imported(filename: str, modules: str | list[str]) -> None:
     """
     if isinstance(modules, str):
         modules = [modules]
-    source = get_source_code(filename)
-    tree = ast.parse(source, filename)
+    tree = get_source_tree(filename)
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
@@ -173,8 +172,7 @@ def count_asserts(filename: str, required: int = 1) -> None:
     """
 
     # Parse the module and find all test functions
-    source = get_source_code(filename)
-    tree = ast.parse(source, filename)
+    tree = get_source_tree(filename)
     test_functions = [
         node for node in tree.body
         if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")
@@ -207,9 +205,8 @@ def count_calls(filename: str, func_id: str) -> int:
     Returns:
         Number of times the function is called.
     """
-    source = get_source_code(filename)
-    tree = ast.parse(source, filename)
     count = 0
+    tree = get_source_tree(filename)
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             # plain function calls
@@ -256,8 +253,7 @@ def count_nodes(filename: str) -> Counter[str]:
     Returns:
         Maps AST node names to counts.
     """
-    source = get_source_code(filename)
-    tree = ast.parse(source, filename)
+    tree = get_source_tree(filename)
     return Counter(type(node).__name__ for node in ast.walk(tree))
 
 
@@ -293,6 +289,19 @@ def get_source_code(filename: str) -> str:
     chdir_test()
     with open(filename, encoding="utf-8") as file:
         return file.read()
+
+
+def get_source_tree(filename: str) -> ast.Module:
+    """Parse the contents of a source file.
+
+    Args:
+        filename: The source file to parse.
+
+    Returns:
+        The root of the module's AST.
+    """
+    source = get_source_code(filename)
+    return ast.parse(source, filename)
 
 
 def remove_docstrings(node: ast.AST) -> ast.AST:
