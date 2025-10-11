@@ -7,6 +7,7 @@ import os
 import pytest
 import subprocess
 import sys
+import types
 
 
 def chdir_test() -> None:
@@ -64,6 +65,26 @@ def assert_docs(filename: str) -> None:
     if result.returncode:
         pytest.fail("Docstring issues:\n" + "\n".join("  " +
                     line for line in result.stdout.splitlines()), False)
+
+
+def name_date(
+    module: types.ModuleType,
+    orig_name: str = "YOUR NAME",
+    orig_date: str = "THE DATE",
+) -> None:
+    """Make sure the student wrote their name and date in the docstring.
+
+    Args:
+        module: The imported module to check.
+        orig_name: Name provided in the starter code.
+        orig_date: Date provided in the starter code.
+    """
+    name = module.__name__
+    doc = module.__doc__ or ""
+    if orig_name in doc:
+        pytest.fail(f"Please write your name in {name}.py's docstring.")
+    if orig_date in doc:
+        pytest.fail(f"Please write the date in {name}.py's docstring.")
 
 
 def ruff_check(filename: str, code: bool = True, docs: bool = True) -> None:

@@ -127,7 +127,7 @@ def assert_no_loops(filename: str) -> None:
 
 
 def assert_no_functional(filename: str) -> None:
-    """Check that functional programming features are NOT used.
+    """Check that functional programming features are not used.
 
     This includes list/set/dict comprehensions, generator expressions, and
     lambda expressions.
