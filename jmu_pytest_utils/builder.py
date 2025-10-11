@@ -122,7 +122,10 @@ def make_cfg() -> None:
     if not AUTOGRADER_TESTS:
         AUTOGRADER_TESTS = [file for file in test_files
                             if file not in SUBMISSION_FILES]
-    if not ADDITIONAL_FILES:
+    # Ignore other files if manually set to None
+    if ADDITIONAL_FILES is None:
+        ADDITIONAL_FILES = []
+    elif not ADDITIONAL_FILES:
         ADDITIONAL_FILES = [file for file in main_files + data_files
                             if file not in SUBMISSION_FILES]
     # Special case: don't submit provided files
@@ -312,7 +315,7 @@ def main() -> None:
         testmod = sys.argv[2]
         if testmod.endswith(".py") and os.path.exists(testmod):
             command = sys.argv[1]
-            zipname = testmod[:-3].replace("test_", "").replace("_test", "")
+            zipname = testmod[:-3].replace("test_", "")
             ZIP_FILENAME = f"autograder_{zipname}.zip"
     sys.path.insert(0, os.getcwd())  # for importlib
     match command:

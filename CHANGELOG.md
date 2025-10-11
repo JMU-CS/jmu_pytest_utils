@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `get_source_tree` function in audit.py
 - `name_date` function in common.py
 
+### Changed
+
+- ignore other files if ADDITIONAL_FILES is None
+
 
 ## [1.5.0] - 2025-10-10
 
