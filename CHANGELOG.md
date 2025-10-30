@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `get_source_tree` function in audit.py
 - `name_date` function in common.py
 
+### Fixed
+
+- fail test if partial credit is set to 0 (#19)
+
 ### Changed
 
 - ignore other files if ADDITIONAL_FILES is None

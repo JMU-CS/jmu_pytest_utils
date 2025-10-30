@@ -105,8 +105,8 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
         # max_score is set by the @weight() decorator
         weight = getattr(test_function, "weight", 0)
         # score can be set manually for partial credit
-        score = getattr(test_function, "score", 0)
-        if not score:
+        score = getattr(test_function, "score", None)
+        if score is None:
             # The default score is all or nothing
             if any(r.failed for r in reports):
                 score = 0
@@ -114,7 +114,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
                 score = weight
         # Show score only if not 0/0 points (blue)
         if score or weight:
-            total_score += score
+            total_score = score
             test["score"] = score
             test["max_score"] = weight
 
