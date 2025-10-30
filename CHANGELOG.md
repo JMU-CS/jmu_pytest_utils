@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - ignore other files if ADDITIONAL_FILES is None
+- ignore .DS_Store files when building zip (#15)
+- zip name from parent directory if in src (#18)
 
 
 ## [1.5.0] - 2025-10-10
