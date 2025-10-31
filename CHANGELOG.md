@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- TBD
+### Changed
+
+- improve error when username is not found
 
 
 ## [1.6.1] - 2025-10-31
@@ -149,7 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Use semantic versioning (added third digit)
+- use semantic versioning (added third digit)
 
 
 ## [1.0] - 2024-12-30

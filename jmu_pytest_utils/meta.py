@@ -5,6 +5,23 @@ import inspect
 import json
 
 
+def _load_user() -> dict | None:
+    """Load submission metadata and get the first user.
+
+    Returns:
+        JSON object with id, email, name, sid, assignment, and sections.
+        None if submission_metadata.json is not found (running offline).
+    """
+    try:
+        with open("/autograder/submission_metadata.json") as file:
+            metadata = json.load(file)
+            return metadata["users"][0]
+    except FileNotFoundError:
+        return None
+    except IndexError as e:
+        raise IndexError("user not found in submission metadata") from e
+
+
 def get_username(default: str = "username") -> str:
     """Get the student's username from the submission metadata.
 
@@ -14,12 +31,10 @@ def get_username(default: str = "username") -> str:
     Returns:
         The student's email address before the @ symbol.
     """
-    try:
-        with open("/autograder/submission_metadata.json") as file:
-            metadata = json.load(file)
-            return metadata["users"][0]["email"].split("@")[0]
-    except FileNotFoundError:
+    user = _load_user()
+    if user is None:
         return default
+    return user["email"].split("@")[0]
 
 
 def submission_open(before: int = 5, after: int = 5) -> bool:
@@ -37,16 +52,12 @@ def submission_open(before: int = 5, after: int = 5) -> bool:
     Returns:
         True if the current time is within the submission window.
     """
-
-    # Get the submission metadata
-    try:
-        with open("/autograder/submission_metadata.json") as file:
-            metadata = json.load(file)
-    except FileNotFoundError:
+    user = _load_user()
+    if user is None:
         return False
 
     # Get the assignment's dates specific to the user
-    assignment = metadata["users"][0]["assignment"]
+    assignment = user["assignment"]
     beg = datetime.fromisoformat(assignment["release_date"])
     end = datetime.fromisoformat(assignment["due_date"])
     late = assignment.get("late_due_date")
