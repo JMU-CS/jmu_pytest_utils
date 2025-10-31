@@ -114,7 +114,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
                 score = weight
         # Show score only if not 0/0 points (blue)
         if score or weight:
-            total_score = score
+            total_score += score
             test["score"] = score
             test["max_score"] = weight
 
