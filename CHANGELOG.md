@@ -8,9 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `get_caller()` function in coverage.py
+- `half_credit()` function in coverage.py
+- `full_credit()` function in coverage.py
+
 ### Changed
 
 - improve error when username is not found
+- `assert_fail()` no longer takes a function
+- `assert_pass()` no longer takes a function
+- `assert_cover()` no longer takes a function
 
 
 ## [1.6.1] - 2025-10-31

@@ -17,17 +17,17 @@ def test_pep8():
 @weight(2)
 def test_fail():
     """All tests should fail when given random return values"""
-    assert_fail(test_fail, "triangles.py", "test_triangles.py")
+    assert_fail("triangles.py", "test_triangles.py")
 
 
 @required()
 @weight(2)
 def test_pass():
     """All tests should pass when given actual return values"""
-    assert_pass(test_pass, "triangles.py", "test_triangles.py")
+    assert_pass("triangles.py", "test_triangles.py")
 
 
 @weight(5)
 def test_cover():
     """Code coverage: all statements should run during tests"""
-    assert_cover(test_cover, "triangles.py", "test_triangles.py")
+    assert_cover("triangles.py", "test_triangles.py")

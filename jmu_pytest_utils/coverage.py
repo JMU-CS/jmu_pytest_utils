@@ -1,6 +1,7 @@
 """Run test coverage and analyze the results."""
 
 import importlib
+import inspect
 import json
 import os
 import pytest
@@ -32,6 +33,46 @@ def inject_random(main_filename: str) -> None:
     for name, obj in vars(module).items():
         if isinstance(obj, types.FunctionType):
             obj.__code__ = _return_random.__code__
+
+
+def get_caller() -> TestFunction:
+    """Get a reference to the function that called the current function.
+
+    This inspects the call stack to identify the immediate caller and
+    retrieves its function object from the caller's global namespace.
+
+    Returns:
+        The function that called the current function.
+    """
+    frame = inspect.currentframe()
+    assert frame is not None, "Cannot get current frame"
+    caller_frame = frame.f_back
+    assert caller_frame is not None, "Cannot get caller's frame"
+    caller_frame = caller_frame.f_back
+    assert caller_frame is not None, "Cannot get caller's caller's frame"
+    caller = caller_frame.f_globals.get(caller_frame.f_code.co_name)
+    assert caller is not None, "Calling function not found in globals"
+    return caller
+
+
+def half_credit() -> None:
+    """Give half credit for passing the sample tests.
+
+    Sets the `score` and `output` attributes of the test function.
+    """
+    test_func = get_caller()
+    test_func.score = test_func.weight / 2
+    test_func.output = "Half credit for passing the sample tests.\n"
+
+
+def full_credit() -> None:
+    """Give full credit for passing all of the tests.
+
+    Deletes the `score` and `output` attributes set by half_credit().
+    """
+    test_func = get_caller()
+    del test_func.score
+    del test_func.output
 
 
 def _process_results_json(function: TestFunction, status: str, penalty: float) -> None:
@@ -71,7 +112,7 @@ def _process_results_json(function: TestFunction, status: str, penalty: float) -
         pytest.fail(output)
 
 
-def assert_fail(function: TestFunction, main_filename: str, test_filename: str,
+def assert_fail(main_filename: str, test_filename: str,
                 penalty: float = 1) -> None:
     """Run pytest and assert that all tests fail.
 
@@ -79,7 +120,6 @@ def assert_fail(function: TestFunction, main_filename: str, test_filename: str,
     patches all functions in main_filename to return random.
 
     Args:
-        function: Test function for score/weight.
         main_filename: Name of the main file to test.
         test_filename: Name of the test file to run.
         penalty: Points per incorrect test function.
@@ -89,15 +129,14 @@ def assert_fail(function: TestFunction, main_filename: str, test_filename: str,
         "--jmu=" + main_filename,
         test_filename
     ])
-    _process_results_json(function, "fail", penalty)
+    _process_results_json(get_caller(), "fail", penalty)
 
 
-def assert_pass(function: TestFunction, main_filename: str, test_filename: str,
+def assert_pass(main_filename: str, test_filename: str,
                 penalty: float = 1) -> None:
     """Run pytest and assert that all tests pass.
 
     Args:
-        function: Test function for score/weight.
         main_filename: Name of the main file to test.
         test_filename: Name of the test file to run.
         penalty: Points per incorrect test function.
@@ -107,15 +146,14 @@ def assert_pass(function: TestFunction, main_filename: str, test_filename: str,
         "--jmu=assert_pass",
         test_filename
     ])
-    _process_results_json(function, "pass", penalty)
+    _process_results_json(get_caller(), "pass", penalty)
 
 
-def assert_cover(function: TestFunction, main_filename: str, test_filename: str,
-                 branches: bool = False, line_penalty: float = 1, branch_penalty: float = 1) -> None:
+def assert_cover(main_filename: str, test_filename: str, branches: bool = False,
+                 line_penalty: float = 1, branch_penalty: float = 1) -> None:
     """Run pytest and analyze coverage results.
 
     Args:
-        function: Test function for score/weight.
         main_filename: Name of the main file to test.
         test_filename: Name of the test file to run.
         branches: Whether to report branch coverage.
@@ -159,6 +197,7 @@ def assert_cover(function: TestFunction, main_filename: str, test_filename: str,
 
     # If the test didn't pass, set the score and show output
     if points:
+        function = get_caller()
         weight = getattr(function, "weight", 0)
         if weight:
             setattr(function, "score", max(weight - points, 0))
