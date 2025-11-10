@@ -4,7 +4,7 @@ from types import ModuleType
 from typing import Any, Callable
 
 import pytest
-from coverage import get_caller
+from jmu_pytest_utils.coverage import get_caller
 
 
 def check_docstring(module: ModuleType, min_len: int = 15) -> None:
@@ -51,7 +51,9 @@ def _type_name(value: Any) -> str:
         return "a " + name
 
 
-def check_return_types(*calls: tuple[type, Callable[..., Any], *tuple[Any, ...]]) -> None:
+def check_return_types(
+    *calls: tuple[type, Callable[..., Any], *tuple[Any, ...]],
+) -> None:
     """Verify the return type of one or more function calls.
 
     If the calling test function does not already have a docstring, the
