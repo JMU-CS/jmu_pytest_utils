@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `get_caller()` function in coverage.py
 - `half_credit()` function in coverage.py
 - `full_credit()` function in coverage.py
+- `check_docstring()` function in quiz.py
+- `check_return_types()` function in quiz.py
 
 ### Changed
 

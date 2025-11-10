@@ -14,6 +14,7 @@ Some tests will import:
 * `jmu_pytest_utils.audit` – analyze the student's source code
 * `jmu_pytest_utils.coverage` – analyze the student's unit tests
 * `jmu_pytest_utils.meta` – analyze the submission metadata
+* `jmu_pytest_utils.quiz` – analyze docstring and return types
 
 And of course `pytest`:
 
