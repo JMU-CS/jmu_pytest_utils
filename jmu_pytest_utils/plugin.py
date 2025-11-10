@@ -50,7 +50,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 def pytest_exception_interact(
     node: pytest.Item | pytest.Collector,
     call: pytest.CallInfo[Any],
-    report: pytest.CollectReport | pytest.TestReport
+    report: pytest.CollectReport | pytest.TestReport,
 ) -> None:
     """Report errors during collection."""
 

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- TBD
+
+
+## [1.7.0] - 2025-11-10
+
 ### Added
 
 - `get_caller()` function in coverage.py
@@ -170,7 +175,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release; see [v1.0 HISTORY.md](https://github.com/JMU-CS/jmu_pytest_utils/blob/v1.0/HISTORY.md)
 
 
-[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.1...HEAD
+[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.1...v1.7.0
 [1.6.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.0...v1.6.1
 [1.6.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.4.0...v1.5.0
