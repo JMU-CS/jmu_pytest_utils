@@ -11,6 +11,7 @@ The following "assignments" are used for testing `jmu_pytest_utils` and provided
 * [7_class_package](7_class_package) -- classes and packages
 * [8_test_coverage](8_test_coverage) -- grading student's tests
 * [9_leaderboard](9_leaderboard) -- Gradescope leaderboard
+* [10_quiz_limited](10_quiz_limited) -- feedback during a quiz
 
 ## API Docs
 
