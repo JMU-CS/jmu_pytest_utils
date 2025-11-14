@@ -160,13 +160,16 @@ def assert_cover(main_filename: str, test_filename: str, branches: bool = False,
         line_penalty: Points per missed line.
         branch_penalty: Points per missed branch.
     """
-    run_command([
+    args = [
         "pytest",
         "--cov=" + main_filename[:-3],  # remove .py suffix
-        "--cov-branch" if branches else "",
         "--cov-report=json",
         test_filename
-    ])
+    ]
+    if branches:
+        # Using insert to avoid sending an empty string to subprocess.run()
+        args.insert(2, "--cov-branch")
+    run_command(args)
     if not os.path.exists("coverage.json"):
         pytest.fail("pytest failed to generate coverage results", False)
     with open("coverage.json") as file:

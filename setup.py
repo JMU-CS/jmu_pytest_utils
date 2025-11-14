@@ -8,6 +8,7 @@ setup(
     description="pytest plugin for Gradescope autograders",
     author="Chris Mayfield",
     author_email="mayfiecs@jmu.edu",
+    url="https://github.com/JMU-CS/jmu_pytest_utils",
     packages=find_packages(),
     classifiers=[
         "Framework :: Pytest",
@@ -31,4 +32,5 @@ setup(
             "jmu_pytest_utils = jmu_pytest_utils.plugin",
         ],
     },
+    python_requires=">=3.10",
 )

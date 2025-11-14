@@ -52,7 +52,7 @@ def _type_name(value: Any) -> str:
 
 
 def check_return_types(
-    *calls: tuple[type, Callable[..., Any], *tuple[Any, ...]],
+    *calls: tuple[type, Callable[..., Any], tuple[Any, ...]],
 ) -> None:
     """Verify the return type of one or more function calls.
 
@@ -67,7 +67,7 @@ def check_return_types(
         calls: Tuples of (expected_type, function, *args).
     """
     output = ""
-    for expected_type, function, *args in calls:
+    for expected_type, function, args in calls:
         try:
             result = function(*args)
             if isinstance(result, expected_type):
