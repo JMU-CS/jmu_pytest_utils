@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TBD
 
 
+## [1.7.1] - 2025-11-14
+
+### Added
+
+- `10_quiz_limited` example assignment
+
+### Fixed
+
+- jmu_pytest_utils supports Python 3.10
+
+### Changed
+
+- `check_return_types()` call args is a tuple
+
+
 ## [1.7.0] - 2025-11-10
 
 ### Added
@@ -175,7 +190,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release; see [v1.0 HISTORY.md](https://github.com/JMU-CS/jmu_pytest_utils/blob/v1.0/HISTORY.md)
 
 
-[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.0...HEAD
+[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.1...HEAD
+[1.7.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.1...v1.7.0
 [1.6.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.0...v1.6.1
 [1.6.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.5.0...v1.6.0
