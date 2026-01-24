@@ -8,8 +8,8 @@ import zipfile
 
 # Path and names of the template files
 TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template")
-CONFIG_FILES = ["docstring.cfg", "flake8.cfg", "requirements.txt",
-                "ruff-code.toml", "ruff-docs.toml", "postsetup.sh"]
+CONFIG_FILES = ["docstring.cfg", "flake8.cfg", "postsetup.sh", "pytest.ini",
+                "requirements.txt", "ruff-code.toml", "ruff-docs.toml"]
 SCRIPT_FILES = ["setup.sh", "run_autograder"]
 
 # Files and dirs created by run_autograder

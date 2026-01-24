@@ -22,6 +22,11 @@ if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi
 
+# Pytest settings
+if [ ! -f "pytest.ini" ]; then
+    cp .venv/lib/python*/site-packages/jmu_pytest_utils/template/pytest.ini .
+fi
+
 # Additional steps
 if [ -f "postsetup.sh" ]; then
     dos2unix postsetup.sh
