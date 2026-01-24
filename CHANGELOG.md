@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TBD
 
 
+## [1.7.2] - 2026-01-24
+
+### Added
+
+- pytest.ini file with `timeout_func_only`
+
+### Fixed
+
+- allow CRLF line endings in template scripts
+
+
 ## [1.7.1] - 2025-11-14
 
 ### Added
@@ -190,7 +201,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release; see [v1.0 HISTORY.md](https://github.com/JMU-CS/jmu_pytest_utils/blob/v1.0/HISTORY.md)
 
 
-[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.1...HEAD
+[unreleased]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.2...HEAD
+[1.7.2]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.1...v1.7.2
 [1.7.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.1...v1.7.0
 [1.6.1]: https://github.com/JMU-CS/jmu_pytest_utils/compare/v1.6.0...v1.6.1
