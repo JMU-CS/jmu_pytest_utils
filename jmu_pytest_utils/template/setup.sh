@@ -2,6 +2,7 @@
 
 # Set autograder environment variables
 cd /autograder/source
+dos2unix config.sh
 source config.sh
 
 # Install Python
@@ -23,5 +24,6 @@ fi
 
 # Additional steps
 if [ -f "postsetup.sh" ]; then
+    dos2unix postsetup.sh
     source postsetup.sh
 fi
