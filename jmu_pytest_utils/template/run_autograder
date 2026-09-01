@@ -4,13 +4,23 @@
 # On Gradescope, the working directory is /autograder. When running offline,
 # the working directory doesn't change, and grading files are created there.
 
-if [ -d "/autograder/results" ]; then
+# determine if running on Gradescope
+function on_gradescope {
+    if [ -n "$ON_GRADESCOPE" ]; then
+        [ "$ON_GRADESCOPE" = "1" ] || [ "$ON_GRADESCOPE" = "true" ]
+    else
+        [ -d "/autograder/submission" ]
+    fi
+    local result=$?
+    # echo "on_gradescope: $( [ $result -eq 0 ] && echo true || echo false )"
+    return $result
+}
+
+if on_gradescope; then
     RES_DIR="/autograder/results"
+    cd /autograder/source
 else
     RES_DIR="."
-fi
-if [ -d "/autograder/source" ]; then
-    cd /autograder/source
 fi
 if [ -d ".venv" ]; then
     source .venv/bin/activate
@@ -39,7 +49,7 @@ function abort {
 }
 
 # check for required files
-if [ -d "/autograder/submission" ]; then
+if on_gradescope; then
     cd /autograder/submission
 fi
 echo -n "Missing Files" > $NAME
@@ -51,10 +61,10 @@ done
 if [[ -s $OUTPUT ]]; then abort; fi
 
 # if running on Gradescope
-if [ -d "/autograder/submission" ]; then
+if on_gradescope; then
     # reject any other files
     echo -n "Extra Files" > $NAME
-    for f in $(find -type f -printf '%P\n'); do
+    for f in $(find . -type f | sed 's|^\./||'); do
         if [[ ! " $SUBMISSION_FILES " =~ .*\ $f\ .* ]]; then
             echo "ERROR: don't submit $f" >> $OUTPUT
         fi
@@ -62,7 +72,10 @@ if [ -d "/autograder/submission" ]; then
     if [[ -s $OUTPUT ]]; then abort; fi
 
     # copy files to source directory
-    cp --parents $SUBMISSION_FILES /autograder/source
+    for f in $SUBMISSION_FILES; do
+        mkdir -p "/autograder/source/$(dirname "$f")"
+        cp "$f" "/autograder/source/$f"
+    done
     cd /autograder/source
 fi
 
@@ -70,7 +83,7 @@ fi
 echo -n "Compiler Error" > $NAME
 for f in $SUBMISSION_FILES; do
     [[ "$f" == *.py ]] && python -m py_compile "$f" 2>> $OUTPUT
-    sed -i 's/^Sorry: //' $OUTPUT
+    sed 's/^Sorry: //' $OUTPUT > $OUTPUT.tmp && mv $OUTPUT.tmp $OUTPUT
 done
 if [[ -s $OUTPUT ]]; then abort; fi
 
@@ -82,7 +95,7 @@ if [[ -s $OUTPUT ]]; then abort; fi
 # create initial results.json file
 python -m jmu_pytest_utils.limit
 if [ $? -ne 0 ]; then
-  if [ -d /autograder/results ]; then
+  if on_gradescope; then
     cp results.json /autograder/results
   fi
   exit  # submission limit exceeded
@@ -90,6 +103,6 @@ fi
 
 # run pytest and emit the results
 pytest --timeout=$FUNCTION_TIMEOUT $AUTOGRADER_TESTS >> $OUTPUT
-if [ -d /autograder/results ]; then
+if on_gradescope; then
     cp results.json /autograder/results
 fi

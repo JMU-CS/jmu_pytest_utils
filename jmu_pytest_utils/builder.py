@@ -218,7 +218,9 @@ def debug_cmd() -> None:
     os.system("bash run_autograder")
 
     print("Opening results.json")
-    if os.name == "posix":
+    if sys.platform == "darwin":
+        os.system("open results.json")
+    elif os.name == "posix":
         os.system("xdg-open results.json")
     else:
         os.system("start results.json")
